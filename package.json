@@ -27,8 +27,8 @@
     "test:unit": "vitest --run",
     "test:unit:watch": "vitest",
     "test:e2e": "playwright test",
-    "test": "pnpm test:unit && pnpm test:e2e",
-    "validate": "pnpm lint && pnpm format && pnpm build && pnpm test",
+    "test": "pnpm test:unit",
+    "validate": "pnpm lint && pnpm format && pnpm test && pnpm test:e2e && pnpm build",
     "prepare": "husky"
   },
   "dependencies": {
