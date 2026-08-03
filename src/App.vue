@@ -2,7 +2,7 @@
 /**
  * @file App.vue
  *
- * @version 2.0.0
+ * @version 1.0.0
  * @author BleckWolf25
  * @license MIT
  *
@@ -138,7 +138,7 @@ onMounted(() => {
 }
 
 .app-body-layout {
-  min-height: calc(100vh - 74px);
+  min-height: calc(100vh - 64px);
   background: transparent !important;
 }
 
@@ -146,11 +146,12 @@ onMounted(() => {
   padding: 28px 32px;
   background: transparent;
   overflow-y: auto;
-  max-height: calc(100vh - 74px);
+  max-height: calc(100vh - 64px);
+  width: 100%;
 }
 
 .content-container {
-  max-width: 1280px;
+  max-width: 1400px;
   margin: 0 auto;
   width: 100%;
 }
@@ -166,9 +167,25 @@ onMounted(() => {
   opacity: 0;
 }
 
+@media (max-width: 992px) {
+  .app-body-layout {
+    min-height: calc(100vh - 56px);
+  }
+  .app-content {
+    padding: 20px;
+    max-height: calc(100vh - 56px);
+  }
+}
+
 @media (max-width: 768px) {
   .app-content {
-    padding: 16px;
+    padding: 14px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-content {
+    padding: 10px 8px;
   }
 }
 </style>

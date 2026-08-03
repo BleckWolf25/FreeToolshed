@@ -1,7 +1,7 @@
 /**
  * @file main.css
  *
- * @version 2.0.0
+ * @version 1.0.0
  * @author BleckWolf25
  * @license MIT
  *
@@ -16,7 +16,6 @@
  * @since 01/08/2026
  * @updated 03/08/2026
  */
-
 /* ---------- CSS VARIABLES & THEME TOKENS (LIGHT / DEFAULT) */
 :root {
   /* Surfaces */
@@ -396,4 +395,61 @@ textarea.code-editor::placeholder,
 
 .full-width {
   width: 100%;
+}
+
+.responsive-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.responsive-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.table-responsive-wrapper,
+.code-scroll-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+  .responsive-grid-2col {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .stamp-heading h2,
+  .stamp-heading .stamp-heading-text {
+    font-size: 18px;
+  }
+
+  .stamp-heading {
+    gap: 10px;
+  }
+
+  .category-pill {
+    font-size: 10px;
+    padding: 1px 6px;
+  }
+
+  textarea.code-editor {
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .stamp-heading h2,
+  .stamp-heading .stamp-heading-text {
+    font-size: 16px;
+  }
+
+  .ant-btn {
+    font-size: 11px !important;
+    padding: 4px 8px !important;
+  }
 }

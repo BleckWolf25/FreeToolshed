@@ -2,7 +2,7 @@
 /**
  * @file Header.vue
  *
- * @version 2.0.0
+ * @version 1.0.0
  * @author BleckWolf25
  * @license MIT
  *
@@ -19,6 +19,10 @@
 <template>
   <a-layout-header class="app-header">
     <div class="header-left">
+      <button class="sidebar-toggle-btn" title="TOGGLE NAVIGATION MENU" @click="toggleSidebar">
+        <MenuFoldOutlined v-if="!collapsed" />
+        <MenuUnfoldOutlined v-else />
+      </button>
       <router-link to="/" class="logo-link">
         <div class="logo-box">
           <ToolOutlined class="logo-icon" />
@@ -130,9 +134,12 @@ import {
   SearchOutlined,
   BulbOutlined,
   BulbFilled,
-  GithubOutlined
+  GithubOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined
 } from '@ant-design/icons-vue';
 import { toolsRegistry, ToolItem } from '../router/toolsRegistry.js';
+import { useSidebar } from '../composables/useSidebar.js';
 
 // ---------- PROPS & EMITS
 defineProps({
@@ -146,6 +153,7 @@ const emit = defineEmits(['toggle-theme']);
 
 // ---------- REACTIVE STATE
 const router = useRouter();
+const { collapsed, toggleSidebar } = useSidebar();
 const searchModalVisible = ref(false);
 const searchQuery = ref('');
 const selectedIndex = ref(0);
@@ -233,7 +241,29 @@ onUnmounted(() => {
 .header-left {
   display: flex;
   align-items: center;
+  gap: 12px;
   height: 100%;
+}
+
+.sidebar-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 16px;
+  transition: none;
+  flex-shrink: 0;
+}
+
+.sidebar-toggle-btn:hover {
+  background: var(--invert-bg);
+  color: var(--invert-text);
+  border-color: var(--border-strong);
 }
 
 .logo-link {
@@ -288,7 +318,9 @@ onUnmounted(() => {
 .header-center {
   flex: 1;
   max-width: 440px;
-  margin: 0 24px;
+  margin: 0 16px;
+  display: flex;
+  justify-content: center;
 }
 
 .search-trigger {
@@ -304,7 +336,8 @@ onUnmounted(() => {
   font-family: var(--font-family);
   font-weight: 600;
   transition: none;
-  width: 280px;
+  width: 100%;
+  max-width: 320px;
   user-select: none;
 }
 
@@ -330,7 +363,7 @@ onUnmounted(() => {
 .header-right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
 }
 
 .workbench-btn {
@@ -353,11 +386,13 @@ onUnmounted(() => {
 }
 
 .github-link {
-  font-size: 20px;
+  font-size: 18px;
   color: var(--text-primary);
   display: flex;
   align-items: center;
-  padding: 6px;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
   border: 1px solid var(--border-color);
 }
 
@@ -367,9 +402,14 @@ onUnmounted(() => {
 }
 
 /* HARD-EDGED SEARCH MODAL */
+:deep(.hard-edged-search-modal) {
+  max-width: calc(100vw - 24px) !important;
+  margin: 12px auto !important;
+}
+
 :deep(.hard-edged-search-modal .ant-modal-content) {
   border: 2px solid var(--border-strong) !important;
-  box-shadow: 8px 8px 0px var(--border-strong) !important;
+  box-shadow: 6px 6px 0px var(--border-strong) !important;
   padding: 0 !important;
   background: var(--card-bg) !important;
 }
@@ -414,6 +454,7 @@ onUnmounted(() => {
   font-weight: 600;
   color: var(--text-primary);
   text-transform: uppercase;
+  width: 100%;
 }
 
 .search-modal-input.block-cursor {
@@ -427,16 +468,23 @@ onUnmounted(() => {
 
 .pegboard-info {
   flex: 1;
+  min-width: 0;
 }
 
 .pegboard-name {
   font-weight: 700;
   font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .pegboard-desc {
   font-size: 11px;
   color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .pegboard-cat-badge {
@@ -445,6 +493,7 @@ onUnmounted(() => {
   text-transform: uppercase;
   border: 1px solid var(--border-color);
   padding: 2px 6px;
+  white-space: nowrap;
 }
 
 .pegboard-arrow {
@@ -485,6 +534,7 @@ onUnmounted(() => {
   background: var(--bg-color);
   font-size: 11px;
   color: var(--text-secondary);
+  flex-wrap: wrap;
 }
 
 .footer-hint {
@@ -495,18 +545,56 @@ onUnmounted(() => {
 
 @media (max-width: 768px) {
   .app-header {
-    padding: 0 12px;
+    padding: 0 10px;
+    height: 56px;
+  }
+  .logo-text {
+    font-size: 17px;
   }
   .logo-sub {
     display: none;
   }
+  .logo-box {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+  .header-center {
+    margin: 0 8px;
+  }
   .search-trigger {
-    width: auto;
     padding: 6px 10px;
+    width: auto;
   }
   .search-trigger-text,
   .hotkey-badge {
     display: none;
+  }
+  .btn-label {
+    display: none;
+  }
+  .workbench-btn {
+    padding: 0 8px;
+    height: 32px;
+  }
+  .github-link {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+  .sidebar-toggle-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-text-wrap {
+    display: none;
+  }
+  .header-right {
+    gap: 6px;
   }
 }
 </style>

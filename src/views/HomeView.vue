@@ -2,7 +2,7 @@
 /**
  * @file HomeView.vue
  *
- * @version 2.0.0
+ * @version 1.0.0
  * @author BleckWolf25
  * @license MIT
  *
@@ -345,26 +345,66 @@ const navigateTo = (path: string) => {
 }
 
 @media (max-width: 768px) {
+  .home-container {
+    gap: 24px;
+  }
   .hero-bench {
-    padding: 24px 16px;
+    padding: 20px 14px;
   }
   .hero-title {
-    font-size: 28px;
+    font-size: 26px;
+  }
+  .hero-subtitle {
+    font-size: 11px;
   }
   .stats-row {
-    flex-direction: column;
-    gap: 8px;
+    flex-wrap: wrap;
+    gap: 12px;
   }
   .stat-divider {
     display: none;
   }
+  .stat-badge {
+    font-size: 11px;
+  }
   .pegboard-row {
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px 12px;
+    padding: 10px 12px;
   }
-  .pegboard-dot,
+  .pegboard-dot {
+    display: none;
+  }
   .pegboard-desc {
     width: 100%;
+    order: 3;
+    font-size: 11px;
+  }
+  .pegboard-arrow {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-bench {
+    padding: 16px 10px;
+  }
+  .hero-title {
+    font-size: 20px;
+  }
+  .hero-tag {
+    font-size: 10px;
+  }
+  .stats-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .search-input-wrap {
+    padding: 8px 10px;
+  }
+  .hero-search-input {
+    font-size: 11px;
   }
 }
 </style>

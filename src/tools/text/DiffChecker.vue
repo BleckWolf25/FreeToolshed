@@ -12,7 +12,7 @@
  * Compares two text inputs side-by-side or inline to highlight additions, deletions, and modifications.
  *
  * @since 01/08/2026
- * @updated 02/08/2026
+ * @updated 03/08/2026
  */
 -->
 <template>
@@ -134,6 +134,10 @@ const {
 @media (max-width: 768px) {
   .editor-grid {
     grid-template-columns: 1fr;
+  }
+  .toolbar-controls {
+    flex-wrap: wrap;
+    gap: 10px;
   }
 }
 

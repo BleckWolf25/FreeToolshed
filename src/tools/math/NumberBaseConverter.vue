@@ -117,7 +117,7 @@
               v-model:value="customBase"
               :min="2"
               :max="36"
-              style="width: 180px"
+              class="custom-base-slider"
               @change="updateFromDecimal"
             />
           </div>
@@ -228,6 +228,8 @@ updateFromDecimal();
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .custom-title-wrap {
@@ -240,12 +242,34 @@ updateFromDecimal();
   display: flex;
   align-items: center;
   gap: 12px;
+  flex: 1;
+  max-width: 340px;
+  min-width: 160px;
+}
+
+.custom-base-slider {
+  flex: 1;
+  min-width: 100px;
+  margin: 0 !important;
+}
+
+@media (max-width: 600px) {
+  .custom-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .custom-slider-wrap {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 .custom-slider-wrap label {
   font-size: 10px;
   font-weight: 700;
   color: var(--text-secondary);
+  white-space: nowrap;
 }
 
 .base-tag {
