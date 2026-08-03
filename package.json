@@ -18,6 +18,10 @@
     "node": ">=22.x",
     "pnpm": ">=9.0.0"
   },
+  "onlyBuiltDependencies": [
+    "core-js",
+    "exifreader"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
