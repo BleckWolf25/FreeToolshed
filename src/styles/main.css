@@ -1,0 +1,113 @@
+/**
+ * @file main.css
+ *
+ * @version 1.0.0
+ * @author BleckWolf25
+ * @license MIT
+ *
+ * @summary Global CSS styles and design system for FreeToolshed
+ *
+ * @description
+ * Custom styling rules, CSS custom properties, dark/light theme definitions,
+ * syntax highlighting rules, scrollbars, code font definitions, and responsive tweaks.
+ *
+ * @since 01/08/2026
+ * @updated 01/08/2026
+ */
+/* ---------- CSS VARIABLES & THEME TOKENS */
+:root {
+  --primary-color: #1890ff;
+  --success-color: #52c41a;
+  --warning-color: #faad14;
+  --error-color: #ff4d4f;
+  --bg-color: #f5f7fa;
+  --card-bg: #ffffff;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+  --code-bg: #1e1e1e;
+  --code-text: #d4d4d4;
+  --code-placeholder: rgba(255, 255, 255, 0.4);
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-code: 'Fira Code', monospace;
+}
+
+[data-theme='dark'] {
+  --primary-color: #177ddc;
+  --bg-color: #141414;
+  --card-bg: #1f1f1f;
+  --text-primary: #f0f0f0;
+  --text-secondary: #8c8c8c;
+  --border-color: #303030;
+  --code-bg: #111111;
+  --code-text: #e6e6e6;
+  --code-placeholder: rgba(255, 255, 255, 0.3);
+}
+
+/* ---------- BASE RESET */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- CODE & MONOSPACE INPUTS */
+textarea.code-editor,
+.code-block,
+pre,
+code {
+  font-family: var(--font-code) !important;
+}
+
+textarea.code-editor {
+  tab-size: 2;
+  white-space: pre;
+}
+
+textarea.code-editor::placeholder,
+.code-editor::placeholder {
+  color: var(--code-placeholder) !important;
+  opacity: 1;
+}
+
+/* ---------- CUSTOM SCROLLBAR */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(140, 140, 140, 0.4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(140, 140, 140, 0.6);
+}
+
+/* ---------- UTILITY CLASSES */
+.text-mono {
+  font-family: var(--font-code);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.full-width {
+  width: 100%;
+}
