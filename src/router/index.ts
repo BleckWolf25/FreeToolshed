@@ -12,7 +12,7 @@
  * route scroll behavior, and page document title resolution for all developer utility routes.
  *
  * @since 01/08/2026
- * @updated 01/08/2026
+ * @updated 03/08/2026
  */
 // ---------- IMPORTS
 import { createRouter, createWebHistory } from 'vue-router';
@@ -43,7 +43,11 @@ const componentMap = {
   ImageMetadata: () => import('../tools/web/ImageMetadata.vue'),
   MorseTranslator: () => import('../tools/text/MorseTranslator.vue'),
   AsciiArtGenerator: () => import('../tools/generators/AsciiArtGenerator.vue'),
-  CodeUnminifier: () => import('../tools/formatters/CodeUnminifier.vue')
+  CodeUnminifier: () => import('../tools/formatters/CodeUnminifier.vue'),
+  Calculator: () => import('../tools/math/Calculator.vue'),
+  PrimeNumber: () => import('../tools/math/PrimeNumber.vue'),
+  RandomNumberGenerator: () => import('../tools/math/RandomNumberGenerator.vue'),
+  NumberBaseConverter: () => import('../tools/math/NumberBaseConverter.vue')
 };
 
 // ---------- ROUTE DEFINITIONS
@@ -63,7 +67,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      meta: { title: 'FreeToolshed - Free, Client-Side Developer Utilities' }
+      meta: { title: 'FreeToolshed - Free Utilities' }
     },
     ...toolRoutes,
     {

@@ -11,7 +11,7 @@
  * Manages reactive state, validation, conversion, and helper actions for the MarkdownConverter component.
  *
  * @since 01/08/2026
- * @updated 02/08/2026
+ * @updated 03/08/2026
  */
 // ---------- IMPORTS
 import { ref, onMounted, getCurrentInstance } from 'vue';
@@ -44,7 +44,7 @@ export function useMarkdownConverter() {
   const SAMPLE_MD = `# FreeToolshed Documentation
 
                     ## Overview
-                    FreeToolshed is a suite of **client-side developer tools**.
+                    FreeToolshed is a suite of **client-side tools**.
 
                     ### Key Features
                     1. **Zero backend dependencies**

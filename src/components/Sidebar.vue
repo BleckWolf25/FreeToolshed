@@ -72,6 +72,7 @@ const collapsed = ref(false);
 const selectedKeys = ref<string[]>([]);
 
 const categories = [
+  { name: 'Mathematics', shortName: 'MATHEMATICS' },
   { name: 'Formatters & Parsers', shortName: 'FORMATTERS' },
   { name: 'Encoders & Decoders', shortName: 'ENCODERS' },
   { name: 'Generators', shortName: 'GENERATORS' },

@@ -35,7 +35,10 @@ import {
   TableOutlined,
   PictureOutlined,
   AudioOutlined,
-  BorderOutlined
+  BorderOutlined,
+  CalculatorOutlined,
+  CheckCircleOutlined,
+  RetweetOutlined
 } from '@ant-design/icons-vue';
 
 export interface ToolItem {
@@ -306,5 +309,53 @@ export const toolsRegistry: ToolItem[] = [
     icon: CodeOutlined,
     category: 'Formatters & Parsers',
     tags: ['unminify', 'beautify', 'format', 'js', 'css', 'json', 'html', 'sql', 'prettify']
+  },
+  {
+    id: 'calculator',
+    name: 'Scientific & Graphical Calculator',
+    shortDesc: 'Scientific & Graphical Calculator',
+    description:
+      'Accurate, full-featured scientific, trigonometric, matrix, and function graphing calculator.',
+    path: '/tools/calculator',
+    component: 'Calculator',
+    icon: CalculatorOutlined,
+    category: 'Mathematics',
+    tags: ['calculator', 'math', 'scientific', 'graph', 'trig', 'matrix', 'calculus']
+  },
+  {
+    id: 'prime-number',
+    name: 'Prime Number Checker & Generator',
+    shortDesc: 'Check & Generate Prime Numbers',
+    description:
+      'Test integer primality, view prime factorizations, and generate prime number ranges.',
+    path: '/tools/prime-number',
+    component: 'PrimeNumber',
+    icon: CheckCircleOutlined,
+    category: 'Mathematics',
+    tags: ['prime', 'math', 'factors', 'sieve', 'primality', 'number', 'check']
+  },
+  {
+    id: 'random-number-generator',
+    name: 'Random Number Generator',
+    shortDesc: 'Generate Random Numbers & Ranges',
+    description:
+      'Generate random numbers within custom ranges with exclusion lists, uniqueness constraints, and sorting.',
+    path: '/tools/random-number-generator',
+    component: 'RandomNumberGenerator',
+    icon: NumberOutlined,
+    category: 'Mathematics',
+    tags: ['random', 'rng', 'number', 'generator', 'range', 'exclusions', 'chance']
+  },
+  {
+    id: 'number-base-converter',
+    name: 'Number Base Converter',
+    shortDesc: 'Convert Binary Octal Hex Decimal',
+    description:
+      'Convert between Binary, Octal, Decimal, Hexadecimal, and Custom bases with 8/16/32-bit representations.',
+    path: '/tools/number-base-converter',
+    component: 'NumberBaseConverter',
+    icon: RetweetOutlined,
+    category: 'Mathematics',
+    tags: ['base', 'binary', 'octal', 'hex', 'decimal', 'convert', 'radix', 'bitwise']
   }
 ];

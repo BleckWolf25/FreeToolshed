@@ -7,7 +7,7 @@
 ## Features
 
 - **100% Client-Side**: All parsing, encoding, hashing, and rendering is done entirely inside your browser. No server calls, data leakage, or external logging.
-- **21 Developer Tools**: Complete toolset spanning JSON formatting, Base64 encoding, JWT parsing, Regex testing, Hash generation, QR Code creation, Diff checking, and more.
+- **25 Developer Tools**: Complete toolset spanning Mathematics, JSON formatting, Base64 encoding, JWT parsing, Regex testing, Hash generation, QR Code creation, Diff checking, and more.
 - **Ant Design Vue UI**: Clean, modern interface with native Dark/Light mode theme switching.
 - **Global Search Modal**: Instant search across all tools via `Cmd+K` / `Ctrl+K` hotkey.
 - **Offline & Offline Ready**: Fast page loads powered by Vite bundling.
