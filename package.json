@@ -22,12 +22,6 @@
     "core-js",
     "exifreader"
   ],
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "core-js",
-      "exifreader"
-    ]
-  },
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",

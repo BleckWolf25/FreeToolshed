@@ -1,0 +1,3 @@
+allowBuilds:
+  exifreader: true
+  core-js: true
