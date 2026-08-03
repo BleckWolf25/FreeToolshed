@@ -2,7 +2,7 @@
 /**
  * @file ColorConverter.vue
  *
- * @version 2.0.0
+ * @version 1.0.0
  * @author BleckWolf25
  * @license MIT
  *
@@ -153,7 +153,6 @@ const {
   hslString,
   whiteContrastRatio,
   blackContrastRatio,
-  contrastTextColor,
   onHexChange,
   copyVal,
   handleReset
@@ -284,6 +283,18 @@ const {
 @media (max-width: 640px) {
   .contrast-cols {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner-inner {
+    padding: 8px 12px;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .banner-hex-title {
+    font-size: 18px;
   }
 }
 </style>

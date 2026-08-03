@@ -1,3 +1,21 @@
+<!--
+/**
+ * @file Sidebar.vue
+ *
+ * @version 1.0.0
+ * @author BleckWolf25
+ * @license MIT
+ *
+ * @summary Sidebar with collapsible categories, tree navigation, and responsive mobile behavior
+ *
+ * @description
+ * Provides a collapsible sidebar for navigating tool categories and individual tools, with responsive behavior for mobile devices.
+ Highlights the current route and allows navigation to different tools.
+ *
+ * @since 02/08/2026
+ * @updated 03/08/2026
+ */
+-->
 <template>
   <a-layout-sider
     v-model:collapsed="collapsed"
@@ -64,11 +82,12 @@ import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { HomeOutlined } from '@ant-design/icons-vue';
 import { toolsRegistry } from '../router/toolsRegistry.js';
+import { useSidebar } from '../composables/useSidebar.js';
 
 // ---------- REACTIVE STATE
 const route = useRoute();
 const router = useRouter();
-const collapsed = ref(false);
+const { collapsed, closeOnMobile } = useSidebar();
 const selectedKeys = ref<string[]>([]);
 
 const categories = [
@@ -106,6 +125,7 @@ watch(
 // ---------- METHODS
 const navigateTo = (path: string) => {
   router.push(path);
+  closeOnMobile();
 };
 </script>
 
@@ -114,12 +134,30 @@ const navigateTo = (path: string) => {
   border-right: 1px solid var(--border-color);
   background: var(--card-bg) !important;
   font-family: var(--font-family);
+  z-index: 90;
+}
+
+@media (max-width: 992px) {
+  .app-sidebar {
+    position: fixed !important;
+    top: 56px;
+    bottom: 0;
+    left: 0;
+    height: calc(100vh - 56px) !important;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.15);
+  }
 }
 
 .sidebar-inner {
   height: calc(100vh - 64px);
   overflow-y: auto;
   padding: 12px 0;
+}
+
+@media (max-width: 992px) {
+  .sidebar-inner {
+    height: calc(100vh - 56px);
+  }
 }
 
 .sidebar-header {

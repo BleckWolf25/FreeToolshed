@@ -12,7 +12,7 @@
  * Converts text case between camelCase, PascalCase, snake_case, kebab-case, UPPERCASE, lowercase, and Title Case.
  *
  * @since 01/08/2026
- * @updated 02/08/2026
+ * @updated 03/08/2026
  */
 -->
 <template>
@@ -135,7 +135,7 @@ const {
 
 .cases-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 16px;
 }
 

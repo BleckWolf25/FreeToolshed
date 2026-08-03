@@ -55,7 +55,12 @@
           </a-button>
 
           <span>Speed (WPM): {{ wpm }}</span>
-          <a-slider v-model:value="wpm" :min="5" :max="30" style="width: 100px" />
+          <a-slider
+            v-model:value="wpm"
+            :min="5"
+            :max="30"
+            style="min-width: 100px; flex: 1; max-width: 160px; margin: 0 4px"
+          />
         </a-space>
       </div>
 

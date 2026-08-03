@@ -1,7 +1,7 @@
 /**
  * @file formatters_and_parsers.spec.ts
  *
- * @version 2.0.0
+ * @version 1.0.0
  * @author BleckWolf25
  * @license MIT
  *
