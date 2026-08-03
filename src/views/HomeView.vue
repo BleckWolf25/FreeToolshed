@@ -44,8 +44,8 @@
 
       <div class="stats-row">
         <div class="stat-badge">
-          <span class="stat-num">[21]</span>
-          <span class="stat-lbl">DEVELOPER TOOLS</span>
+          <span class="stat-num">[{{ totalToolsCount }}]</span>
+          <span class="stat-lbl">TOTAL TOOLS</span>
         </div>
         <div class="stat-divider">|</div>
         <div class="stat-badge">
@@ -128,7 +128,8 @@ import {
   RetweetOutlined,
   FireOutlined,
   FormOutlined,
-  ToolOutlined
+  ToolOutlined,
+  CalculatorOutlined
 } from '@ant-design/icons-vue';
 import { toolsRegistry, ToolItem } from '../router/toolsRegistry.js';
 import { storage } from '../utils/storage.js';
@@ -138,6 +139,7 @@ const router = useRouter();
 const searchFilter = ref('');
 
 const categories = [
+  { name: 'MATHEMATICS', icon: CalculatorOutlined },
   { name: 'FORMATTERS & PARSERS', icon: CodeOutlined },
   { name: 'ENCODERS & DECODERS', icon: RetweetOutlined },
   { name: 'GENERATORS', icon: FireOutlined },
@@ -147,6 +149,7 @@ const categories = [
 
 // Map categories to tool category strings
 const categoryMap: Record<string, string> = {
+  MATHEMATICS: 'Mathematics',
   'FORMATTERS & PARSERS': 'Formatters & Parsers',
   'ENCODERS & DECODERS': 'Encoders & Decoders',
   GENERATORS: 'Generators',
@@ -155,6 +158,8 @@ const categoryMap: Record<string, string> = {
 };
 
 // ---------- COMPUTED PROPERTIES
+const totalToolsCount = computed(() => toolsRegistry.length);
+
 const filterTools = (tools: ToolItem[]) => {
   if (!searchFilter.value.trim()) return tools;
   const q = searchFilter.value.toLowerCase();

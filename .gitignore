@@ -148,6 +148,10 @@ dist
 # https://nextjs.org/blog/next-9-1#public-directory-support
 # public
 
+# playwright
+playwright-report
+test-results
+
 # vuepress build output
 .vuepress/dist
 
