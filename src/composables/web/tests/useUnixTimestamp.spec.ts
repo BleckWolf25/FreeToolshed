@@ -14,10 +14,11 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useUnixTimestamp } from './useUnixTimestamp';
+import { useUnixTimestamp } from '../useUnixTimestamp';
 
+// ---------- TESTS
 describe('useUnixTimestamp composable', () => {
   it('initializes with current timestamp, inputs, and faq metadata', () => {
     const { currentSec, currentMs, tsInput, tsUnit, faq, compatibility } = useUnixTimestamp();

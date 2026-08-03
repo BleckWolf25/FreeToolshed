@@ -13,10 +13,11 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect, vi } from 'vitest';
-import { useImageMetadata } from './useImageMetadata';
+import { useImageMetadata } from '../useImageMetadata';
 
+// ---------- TESTS
 describe('useImageMetadata composable', () => {
   it('initializes with null image data and empty metadata JSON', () => {
     const { imageData, metadataJson, faq, compatibility } = useImageMetadata();
@@ -44,7 +45,7 @@ describe('useImageMetadata composable', () => {
   });
 
   it('processes image file upload and builds image data and metadata JSON fallback', async () => {
-    const { imageData, metadataJson, handleFileUpload } = useImageMetadata();
+    const { handleFileUpload } = useImageMetadata();
 
     // Mock URL.createObjectURL and Image
     global.URL.createObjectURL = vi.fn().mockReturnValue('blob:http://localhost/test-image');

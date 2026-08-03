@@ -2,17 +2,17 @@
 /**
  * @file ColorConverter.vue
  *
- * @version 1.0.0
+ * @version 2.0.0
  * @author BleckWolf25
  * @license MIT
  *
  * @summary Color Format Converter tool component
  *
  * @description
- * Converts color values between HEX, RGB, HSL, and HSV formats with color preview and pickers.
+ * Converts color values between HEX, RGB, HSL, and HSV formats with color preview and custom workbench picker.
  *
  * @since 01/08/2026
- * @updated 02/08/2026
+ * @updated 03/08/2026
  */
 -->
 <template>
@@ -36,10 +36,8 @@
       <!-- COLOR PREVIEW HEADER CARD -->
       <div class="color-preview-banner" :style="{ backgroundColor: hexColor }">
         <div class="banner-inner">
-          <input type="color" v-model="hexColor" class="native-color-picker" @input="onHexChange" />
-          <span class="banner-hex-title" :style="{ color: contrastTextColor }">{{
-            hexColor.toUpperCase()
-          }}</span>
+          <WorkbenchColorPicker v-model:value="hexColor" @change="onHexChange" />
+          <span class="banner-hex-title">{{ hexColor.toUpperCase() }}</span>
         </div>
       </div>
 
@@ -47,27 +45,45 @@
       <div class="inputs-grid">
         <div class="input-card">
           <label>HEX Color</label>
-          <a-input v-model:value="hexColor" size="large" @input="onHexChange">
+          <a-input v-model:value="hexColor" size="large" class="text-mono" @input="onHexChange">
             <template #suffix>
-              <a-button type="link" size="small" @click="copyVal(hexColor, 'HEX')">Copy</a-button>
+              <a-button
+                type="link"
+                size="small"
+                class="workbench-btn-link"
+                @click="copyVal(hexColor, 'HEX')"
+                >Copy</a-button
+              >
             </template>
           </a-input>
         </div>
 
         <div class="input-card">
           <label>RGB Color</label>
-          <a-input :value="rgbString" readonly size="large">
+          <a-input :value="rgbString" readonly size="large" class="text-mono">
             <template #suffix>
-              <a-button type="link" size="small" @click="copyVal(rgbString, 'RGB')">Copy</a-button>
+              <a-button
+                type="link"
+                size="small"
+                class="workbench-btn-link"
+                @click="copyVal(rgbString, 'RGB')"
+                >Copy</a-button
+              >
             </template>
           </a-input>
         </div>
 
         <div class="input-card">
           <label>HSL Color</label>
-          <a-input :value="hslString" readonly size="large">
+          <a-input :value="hslString" readonly size="large" class="text-mono">
             <template #suffix>
-              <a-button type="link" size="small" @click="copyVal(hslString, 'HSL')">Copy</a-button>
+              <a-button
+                type="link"
+                size="small"
+                class="workbench-btn-link"
+                @click="copyVal(hslString, 'HSL')"
+                >Copy</a-button
+              >
             </template>
           </a-input>
         </div>
@@ -78,30 +94,40 @@
         <h3>WCAG 2.1 Contrast Analysis</h3>
         <div class="contrast-cols">
           <div class="contrast-item">
-            <div class="contrast-sample" :style="{ backgroundColor: hexColor, color: '#FFFFFF' }">
+            <div
+              class="contrast-sample uppercase-text"
+              :style="{ backgroundColor: hexColor, color: '#FFFFFF' }"
+            >
               White Text
             </div>
             <div class="contrast-stats">
               <span
-                >Ratio: <strong>{{ whiteContrastRatio }}:1</strong></span
+                >RATIO: <strong>{{ whiteContrastRatio }}:1</strong></span
               >
-              <a-tag :color="Number(whiteContrastRatio) >= 4.5 ? 'success' : 'error'">
-                {{ Number(whiteContrastRatio) >= 4.5 ? 'Pass (AA)' : 'Fail (AA)' }}
-              </a-tag>
+              <span
+                :class="['contrast-badge', Number(whiteContrastRatio) >= 4.5 ? 'pass' : 'fail']"
+              >
+                {{ Number(whiteContrastRatio) >= 4.5 ? '[PASS AA]' : '[FAIL AA]' }}
+              </span>
             </div>
           </div>
 
           <div class="contrast-item">
-            <div class="contrast-sample" :style="{ backgroundColor: hexColor, color: '#000000' }">
+            <div
+              class="contrast-sample uppercase-text"
+              :style="{ backgroundColor: hexColor, color: '#000000' }"
+            >
               Black Text
             </div>
             <div class="contrast-stats">
               <span
-                >Ratio: <strong>{{ blackContrastRatio }}:1</strong></span
+                >RATIO: <strong>{{ blackContrastRatio }}:1</strong></span
               >
-              <a-tag :color="Number(blackContrastRatio) >= 4.5 ? 'success' : 'error'">
-                {{ Number(blackContrastRatio) >= 4.5 ? 'Pass (AA)' : 'Fail (AA)' }}
-              </a-tag>
+              <span
+                :class="['contrast-badge', Number(blackContrastRatio) >= 4.5 ? 'pass' : 'fail']"
+              >
+                {{ Number(blackContrastRatio) >= 4.5 ? '[PASS AA]' : '[FAIL AA]' }}
+              </span>
             </div>
           </div>
         </div>
@@ -115,6 +141,7 @@
 import { useColorConverter } from '../../composables/web/useColorConverter';
 import { BgColorsOutlined } from '@ant-design/icons-vue';
 import ToolCard from '../../components/ToolCard.vue';
+import WorkbenchColorPicker from '../../components/WorkbenchColorPicker.vue';
 
 // ---------- COMPOSABLE USAGE
 const {
@@ -138,41 +165,31 @@ const {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  font-family: var(--font-family);
 }
 
 .color-preview-banner {
   height: 120px;
-  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 2px solid var(--border-strong);
 }
 
 .banner-inner {
   display: flex;
   align-items: center;
   gap: 16px;
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(8px);
+  background: var(--card-bg);
   padding: 10px 24px;
-  border-radius: 30px;
-}
-
-.native-color-picker {
-  border: none;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  cursor: pointer;
-  background: transparent;
+  border: 2px solid var(--border-strong);
 }
 
 .banner-hex-title {
   font-family: var(--font-code);
   font-size: 24px;
   font-weight: 700;
+  color: var(--text-primary);
 }
 
 .inputs-grid {
@@ -188,19 +205,33 @@ const {
 }
 
 .input-card label {
-  font-weight: 600;
-  font-size: 13px;
+  font-weight: 700;
+  font-size: 11px;
   color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.workbench-btn-link {
+  font-family: var(--font-family);
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
 }
 
 .accessibility-card {
   background: var(--bg-color);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 16px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
+}
+
+.accessibility-card h3 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
 }
 
 .contrast-cols {
@@ -216,19 +247,43 @@ const {
 }
 
 .contrast-sample {
-  height: 44px;
-  border-radius: 6px;
+  height: 48px;
+  border: 1px solid var(--border-strong);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  font-size: 14px;
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 13px;
 }
 
 .contrast-stats {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 13px;
+  font-size: 12px;
+}
+
+.contrast-badge {
+  font-weight: 700;
+  font-size: 11px;
+  padding: 2px 6px;
+  border: 1px solid var(--border-strong);
+}
+
+.contrast-badge.pass {
+  background: var(--success-color);
+  color: #ffffff;
+}
+
+.contrast-badge.fail {
+  background: var(--error-color);
+  color: #ffffff;
+}
+
+@media (max-width: 640px) {
+  .contrast-cols {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

@@ -62,8 +62,8 @@ describe('JsonFormatter.vue', () => {
 
     expect(wrapper.exists()).toBe(true);
     expect(wrapper.find('.toolbar-controls').exists()).toBe(true);
-    expect(wrapper.text()).toContain('Prettify JSON');
-    expect(wrapper.text()).toContain('Minify JSON');
+    expect(wrapper.text().toUpperCase()).toContain('PRETTIFY JSON');
+    expect(wrapper.text().toUpperCase()).toContain('MINIFY JSON');
     expect(wrapper.find('.ant-select-stub').exists()).toBe(true);
     expect(wrapper.findAll('.panel').length).toBe(2);
   });

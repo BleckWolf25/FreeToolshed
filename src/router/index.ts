@@ -42,7 +42,8 @@ const componentMap = {
   CsvToJson: () => import('../tools/formatters/CsvToJson.vue'),
   ImageMetadata: () => import('../tools/web/ImageMetadata.vue'),
   MorseTranslator: () => import('../tools/text/MorseTranslator.vue'),
-  AsciiArtGenerator: () => import('../tools/generators/AsciiArtGenerator.vue')
+  AsciiArtGenerator: () => import('../tools/generators/AsciiArtGenerator.vue'),
+  CodeUnminifier: () => import('../tools/formatters/CodeUnminifier.vue')
 };
 
 // ---------- ROUTE DEFINITIONS

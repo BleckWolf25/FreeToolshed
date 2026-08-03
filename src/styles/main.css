@@ -1,44 +1,104 @@
 /**
  * @file main.css
  *
- * @version 1.0.0
+ * @version 2.0.0
  * @author BleckWolf25
  * @license MIT
  *
- * @summary Global CSS styles and design system for FreeToolshed
+ * @summary Global CSS styles and design system for FreeToolshed — "Blueprint & Rugged Workbench"
  *
  * @description
- * Custom styling rules, CSS custom properties, dark/light theme definitions,
- * syntax highlighting rules, scrollbars, code font definitions, and responsive tweaks.
+ * Brutalist, industrial monochrome design system: Charcoal #1C1C1C base, Stark White #FFFFFF,
+ * Toolbox Grey #7A7A7A, Blueprint Line Grey #333333, stamped Oswald headings, JetBrains Mono
+ * UI/code typeface, zero border-radius, structural hairline/2px borders, and instant
+ * mechanical hover-invert interaction language.
  *
  * @since 01/08/2026
- * @updated 01/08/2026
+ * @updated 03/08/2026
  */
-/* ---------- CSS VARIABLES & THEME TOKENS */
+
+/* ---------- CSS VARIABLES & THEME TOKENS (LIGHT / DEFAULT) */
 :root {
-  --primary-color: #1890ff;
-  --success-color: #52c41a;
-  --warning-color: #faad14;
-  --error-color: #ff4d4f;
-  --bg-color: #f5f7fa;
+  /* Surfaces */
+  --bg-color: #f4f4f2;
   --card-bg: #ffffff;
-  --text-primary: #1f2937;
-  --text-secondary: #6b7280;
-  --border-color: #e5e7eb;
-  --code-bg: #1e1e1e;
-  --code-text: #d4d4d4;
-  --code-placeholder: rgba(255, 255, 255, 0.4);
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-code: 'Fira Code', monospace;
+  --stamp-bg: #111111;
+  --stamp-text: #ffffff;
+
+  /* Text */
+  --text-primary: #111111;
+  --text-secondary: #7a7a7a;
+  --text-tertiary: #9a9a95;
+
+  /* Borders */
+  --border-color: #d6d6d2;
+  --border-strong: #111111;
+
+  /* Blueprint Line & Accents */
+  --blueprint-line: #333333;
+  --toolbox-grey: #7a7a7a;
+
+  /* Hover / selection invert */
+  --invert-bg: #111111;
+  --invert-text: #ffffff;
+
+  /* Blueprint dot-grid */
+  --grid-dot: rgba(17, 17, 17, 0.08);
+
+  /* Functional (kept minimal, used only for validation states) */
+  --success-color: #2f6b3a;
+  --warning-color: #8a6d1f;
+  --error-color: #a3312a;
+
+  /* Structure */
+  --radius: 0px;
+  --border-w-thin: 1px;
+  --border-w-strong: 2px;
+
+  /* Code surfaces (used by tool textareas) */
+  --code-bg: #111111;
+  --code-text: #e6e6e6;
+  --code-placeholder: rgba(255, 255, 255, 0.35);
+
+  /* Typography */
+  --font-display: 'Oswald', sans-serif;
+  --font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-code: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
 [data-theme='dark'] {
-  --primary-color: #177ddc;
-  --bg-color: #141414;
-  --card-bg: #1f1f1f;
-  --text-primary: #f0f0f0;
-  --text-secondary: #8c8c8c;
-  --border-color: #303030;
+  /* Surfaces */
+  --bg-color: #1c1c1c;
+  --card-bg: #1c1c1c;
+  --stamp-bg: #ffffff;
+  --stamp-text: #1c1c1c;
+
+  /* Text */
+  --text-primary: #ffffff;
+  --text-secondary: #7a7a7a;
+  --text-tertiary: #5a5a5a;
+
+  /* Borders */
+  --border-color: #333333;
+  --border-strong: #ffffff;
+
+  /* Blueprint Line & Accents */
+  --blueprint-line: #333333;
+  --toolbox-grey: #7a7a7a;
+
+  /* Hover / selection invert */
+  --invert-bg: #ffffff;
+  --invert-text: #1c1c1c;
+
+  /* Blueprint dot-grid */
+  --grid-dot: rgba(255, 255, 255, 0.1);
+
+  /* Functional */
+  --success-color: #7bbf8a;
+  --warning-color: #d8b25c;
+  --error-color: #e08983;
+
+  /* Code surfaces */
   --code-bg: #111111;
   --code-text: #e6e6e6;
   --code-placeholder: rgba(255, 255, 255, 0.3);
@@ -49,6 +109,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  border-radius: 0 !important;
 }
 
 body {
@@ -57,6 +118,200 @@ body {
   color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* ---------- BUTTON CONTRAST & WORKBENCH STYLING */
+.ant-btn {
+  font-family: var(--font-family) !important;
+  font-weight: 700;
+  border-radius: 0 !important;
+  transition: none !important;
+}
+
+/* Primary Button High Contrast */
+.ant-btn-primary {
+  background-color: var(--stamp-bg) !important;
+  color: var(--stamp-text) !important;
+  border: 1px solid var(--border-strong) !important;
+  box-shadow: none !important;
+}
+
+.ant-btn-primary span,
+.ant-btn-primary .anticon {
+  color: var(--stamp-text) !important;
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus,
+.ant-btn-primary:active {
+  background-color: var(--invert-bg) !important;
+  color: var(--invert-text) !important;
+  border-color: var(--border-strong) !important;
+}
+
+.ant-btn-primary:hover span,
+.ant-btn-primary:hover .anticon,
+.ant-btn-primary:focus span,
+.ant-btn-primary:focus .anticon {
+  color: var(--invert-text) !important;
+}
+
+/* Default & Dashed Buttons */
+.ant-btn-default,
+.ant-btn-dashed {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.ant-btn-default span,
+.ant-btn-default .anticon,
+.ant-btn-dashed span,
+.ant-btn-dashed .anticon {
+  color: var(--text-primary) !important;
+}
+
+.ant-btn-default:hover,
+.ant-btn-dashed:hover {
+  background-color: var(--invert-bg) !important;
+  color: var(--invert-text) !important;
+  border-color: var(--border-strong) !important;
+}
+
+.ant-btn-default:hover span,
+.ant-btn-default:hover .anticon,
+.ant-btn-dashed:hover span,
+.ant-btn-dashed:hover .anticon {
+  color: var(--invert-text) !important;
+}
+
+/* ---------- TOOLTIP HIGH CONTRAST STYLING */
+.ant-tooltip-inner {
+  font-family: var(--font-family) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  border-radius: 0 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  box-shadow: none !important;
+  background-color: #111111 !important;
+  color: #ffffff !important;
+  border: 1px solid #111111 !important;
+}
+
+.ant-tooltip-arrow::before {
+  background-color: #111111 !important;
+}
+
+[data-theme='dark'] .ant-tooltip-inner {
+  background-color: #ffffff !important;
+  color: #1c1c1c !important;
+  border: 1px solid #ffffff !important;
+}
+
+[data-theme='dark'] .ant-tooltip-arrow::before {
+  background-color: #ffffff !important;
+}
+
+/* Select Dropdown Controls */
+.ant-select-selector {
+  border-radius: 0 !important;
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.ant-select-selection-item,
+.ant-select-arrow {
+  color: var(--text-primary) !important;
+}
+
+/* ---------- BLUEPRINT DOT-GRID BACKGROUND UTILITY */
+.dot-grid-bg {
+  background-color: var(--bg-color);
+  background-image: radial-gradient(circle, var(--grid-dot) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* ---------- STAMPED SECTION HEADING UTILITY */
+.stamp-heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.stamp-heading h2,
+.stamp-heading .stamp-heading-text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.stamp-heading .stamp-heading-rule {
+  flex: 1;
+  height: var(--border-w-thin);
+  background: var(--border-color);
+}
+
+/* ---------- MONO CATEGORY & STATS PILL UTILITIES */
+.category-pill {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-family);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+  background: transparent;
+  border: var(--border-w-thin) solid var(--border-color);
+  padding: 2px 8px;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.stats-pill {
+  font-family: var(--font-family);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--stamp-text);
+  background: var(--stamp-bg);
+  border: 1px solid var(--border-strong);
+  padding: 2px 6px;
+  text-transform: uppercase;
+  line-height: 1.3;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* ---------- HARD KEYCAPS (<kbd>) */
+kbd,
+.kbd-key {
+  display: inline-block;
+  font-family: var(--font-family);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-primary);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-bottom: 2px solid var(--border-strong);
+  padding: 1px 6px;
+  line-height: 1.3;
+  text-transform: uppercase;
 }
 
 /* ---------- CODE & MONOSPACE INPUTS */
@@ -78,6 +333,37 @@ textarea.code-editor::placeholder,
   opacity: 1;
 }
 
+/* ---------- PEGBOARD INDEX ITEM (ZERO-DELAY HOVER INVERT) */
+.pegboard-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-bottom: none;
+  cursor: pointer;
+  transition: none; /* Instant mechanical response */
+  font-family: var(--font-family);
+  user-select: none;
+}
+
+.pegboard-row:last-child {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.pegboard-row:hover {
+  background: var(--invert-bg) !important;
+  color: var(--invert-text) !important;
+}
+
+.pegboard-row:hover .pegboard-icon,
+.pegboard-row:hover .pegboard-name,
+.pegboard-row:hover .pegboard-desc,
+.pegboard-row:hover .pegboard-arrow {
+  color: var(--invert-text) !important;
+}
+
 /* ---------- CUSTOM SCROLLBAR */
 ::-webkit-scrollbar {
   width: 8px;
@@ -89,12 +375,12 @@ textarea.code-editor::placeholder,
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(140, 140, 140, 0.4);
-  border-radius: 4px;
+  background: var(--text-tertiary);
+  border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(140, 140, 140, 0.6);
+  background: var(--text-secondary);
 }
 
 /* ---------- UTILITY CLASSES */

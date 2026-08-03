@@ -14,10 +14,11 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useDiffChecker } from './useDiffChecker';
+import { useDiffChecker } from '../useDiffChecker';
 
+// ---------- TESTS
 describe('useDiffChecker composable', () => {
   it('initializes with default sample code strings and computes initial diff', () => {
     const { text1, text2, diffHtml, diffStats, computeDiff, faq, compatibility } = useDiffChecker();

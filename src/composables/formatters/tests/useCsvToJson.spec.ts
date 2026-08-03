@@ -14,14 +14,14 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useCsvToJson } from './useCsvToJson';
+import { useCsvToJson } from '../useCsvToJson';
 
+// ---------- TESTS
 describe('useCsvToJson composable', () => {
   it('initializes with default CSV sample text, delimiter comma, and hasHeaders true', () => {
-    const { csvInput, delimiter, hasHeaders, outputJson, parsedRows, faq, compatibility } =
-      useCsvToJson();
+    const { csvInput, delimiter, hasHeaders, faq, compatibility } = useCsvToJson();
     expect(csvInput.value).toBeTruthy();
     expect(delimiter.value).toBe(',');
     expect(hasHeaders.value).toBe(true);

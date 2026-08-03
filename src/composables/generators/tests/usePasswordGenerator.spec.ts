@@ -14,13 +14,14 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { usePasswordGenerator } from './usePasswordGenerator';
+import { usePasswordGenerator } from '../usePasswordGenerator';
 
+// ---------- TESTS
 describe('usePasswordGenerator composable', () => {
   it('initializes with default options state and generates initial password', () => {
-    const { password, options, strengthInfo, faq, compatibility } = usePasswordGenerator();
+    const { options, faq, compatibility } = usePasswordGenerator();
     expect(options.length).toBe(16);
     expect(options.uppercase).toBe(true);
     expect(options.lowercase).toBe(true);

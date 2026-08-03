@@ -2,18 +2,18 @@
 /**
  * @file ToolCard.vue
  *
- * @version 1.0.0
+ * @version 2.0.0
  * @author BleckWolf25
  * @license MIT
  *
- * @summary Reusable wrapper component for tool pages with action toolbar, title, favorite toggle, and layout container
+ * @summary Reusable wrapper component for tool pages with action toolbar, stamped title, favorite toggle, and layout container
  *
  * @description
- * Encloses individual tools within a consistent header layout displaying tool icon, title, description,
- * tier badge, favorite button, copy output button, download button, and reset action.
+ * Encloses individual tools within a consistent workbench layout displaying tool icon, stamped title, description,
+ * tier badge, favorite button, copy output button, download button, and reset action with zero border radius.
  *
  * @since 01/08/2026
- * @updated 01/08/2026
+ * @updated 03/08/2026
  */
 -->
 <template>
@@ -39,9 +39,9 @@
               <template #content>
                 <div class="tool-info-content">
                   <div v-if="compatibility && compatibility.length" class="compatibility-sec">
-                    <h4>Compatibility</h4>
+                    <h4>COMPATIBILITY</h4>
                     <div class="compat-tags">
-                      <a-tag v-for="c in compatibility" :key="c" color="green">{{ c }}</a-tag>
+                      <span v-for="c in compatibility" :key="c" class="category-pill">{{ c }}</span>
                     </div>
                   </div>
                   <div v-if="faq && faq.length" class="faq-sec">
@@ -54,14 +54,14 @@
                   </div>
                 </div>
               </template>
-              <a-button type="text" shape="circle" class="info-btn">
+              <a-button type="text" class="workbench-icon-btn">
                 <template #icon><QuestionCircleOutlined /></template>
               </a-button>
             </a-popover>
 
-            <a-tag :color="getCategoryColor(category)" class="tier-tag">{{ category }}</a-tag>
-            <a-tooltip :title="isFav ? 'Remove from Favorites' : 'Add to Favorites'">
-              <a-button type="text" shape="circle" class="fav-btn" @click="toggleFav">
+            <span class="category-pill">{{ category }}</span>
+            <a-tooltip :title="isFav ? 'REMOVE FROM FAVORITES' : 'ADD TO FAVORITES'">
+              <a-button type="text" class="workbench-icon-btn" @click="toggleFav">
                 <template #icon>
                   <StarFilled v-if="isFav" style="color: #faad14" />
                   <StarOutlined v-else />
@@ -76,28 +76,28 @@
       <!-- TOOL ACTIONS TOOLBAR -->
       <div class="tool-actions">
         <slot name="actions">
-          <a-tooltip v-if="hasSample" title="Load sample data for testing">
-            <a-button type="dashed" @click="$emit('sample')">
+          <a-tooltip v-if="hasSample" title="LOAD SAMPLE DATA FOR TESTING">
+            <a-button class="workbench-btn" @click="$emit('sample')">
               <template #icon><ExperimentOutlined /></template>
-              Load Sample
+              SAMPLE
             </a-button>
           </a-tooltip>
-          <a-tooltip v-if="canCopy" title="Copy Output to Clipboard">
-            <a-button type="default" @click="$emit('copy')">
+          <a-tooltip v-if="canCopy" title="COPY OUTPUT TO CLIPBOARD">
+            <a-button class="workbench-btn" @click="$emit('copy')">
               <template #icon><CopyOutlined /></template>
-              Copy
+              COPY
             </a-button>
           </a-tooltip>
-          <a-tooltip v-if="canDownload" title="Download Output File">
-            <a-button type="default" @click="$emit('download')">
+          <a-tooltip v-if="canDownload" title="DOWNLOAD OUTPUT FILE">
+            <a-button class="workbench-btn" @click="$emit('download')">
               <template #icon><DownloadOutlined /></template>
-              Download
+              DOWNLOAD
             </a-button>
           </a-tooltip>
-          <a-tooltip v-if="canReset" title="Reset Tool Input">
-            <a-button type="text" danger @click="$emit('reset')">
+          <a-tooltip v-if="canReset" title="RESET TOOL INPUT">
+            <a-button class="workbench-btn danger-btn" @click="$emit('reset')">
               <template #icon><ReloadOutlined /></template>
-              Reset
+              RESET
             </a-button>
           </a-tooltip>
         </slot>
@@ -170,7 +170,7 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['copy', 'download', 'reset', 'sample']);
+defineEmits(['copy', 'download', 'reset', 'sample']);
 
 // ---------- REACTIVE STATE
 const isFav = ref(false);
@@ -179,23 +179,6 @@ const isFav = ref(false);
 const toggleFav = () => {
   storage.toggleFavorite(props.id);
   isFav.value = storage.isFavorite(props.id);
-};
-
-const getCategoryColor = (c: any) => {
-  switch (c) {
-    case 'Formatters & Parsers':
-      return 'blue';
-    case 'Encoders & Decoders':
-      return 'green';
-    case 'Generators':
-      return 'orange';
-    case 'Text & Code':
-      return 'purple';
-    case 'Web & Misc':
-      return 'magenta';
-    default:
-      return 'default';
-  }
 };
 
 onMounted(() => {
@@ -207,10 +190,9 @@ onMounted(() => {
 <style scoped>
 .tool-card-container {
   background: var(--card-bg);
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--border-strong);
   padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  font-family: var(--font-family);
 }
 
 .tool-header {
@@ -235,12 +217,12 @@ onMounted(() => {
 .tool-icon-wrapper {
   width: 44px;
   height: 44px;
-  border-radius: 10px;
-  background: rgba(24, 144, 255, 0.1);
+  background: var(--stamp-bg);
+  color: var(--stamp-text);
+  border: 1px solid var(--border-strong);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #1890ff;
   font-size: 22px;
   flex-shrink: 0;
 }
@@ -253,64 +235,50 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   flex-wrap: wrap;
 }
 
 .tool-title {
-  font-size: 24px;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
   margin: 0;
   color: var(--text-primary);
-  line-height: 1.2;
+  line-height: 1.1;
+  letter-spacing: 0.03em;
 }
 
-.info-btn {
-  color: var(--text-secondary);
-  opacity: 0.7;
+.workbench-icon-btn {
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 2px 8px;
 }
-.info-btn:hover {
-  opacity: 1;
-  color: #1890ff;
+.workbench-icon-btn:hover {
+  background: var(--invert-bg) !important;
+  color: var(--invert-text) !important;
 }
 
-.tool-info-popover .tool-info-content {
-  max-width: 320px;
-}
 .tool-info-content h4 {
+  font-family: var(--font-display);
   margin: 0 0 8px 0;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
 }
+
 .compatibility-sec {
   margin-bottom: 16px;
 }
+
 .compat-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
 }
-.faq-sec :deep(.ant-collapse-header) {
-  padding-left: 0;
-  padding-right: 0;
-}
-.faq-sec :deep(.ant-collapse-content-box) {
-  padding-left: 0;
-  padding-right: 0;
-  color: var(--text-secondary);
-}
-
-.tier-tag {
-  font-size: 11px;
-}
-
-.fav-btn {
-  font-size: 16px;
-}
 
 .tool-description {
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: 12px;
   margin-top: 4px;
   margin-bottom: 0;
 }
@@ -318,7 +286,31 @@ onMounted(() => {
 .tool-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.workbench-btn {
+  font-family: var(--font-family);
+  font-size: 11px;
+  font-weight: 700;
+  border: 1px solid var(--border-strong);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  height: 34px;
+  padding: 0 12px;
+  text-transform: uppercase;
+}
+
+.workbench-btn:hover {
+  background: var(--invert-bg) !important;
+  color: var(--invert-text) !important;
+}
+
+.danger-btn:hover {
+  background: var(--error-color) !important;
+  color: #ffffff !important;
+  border-color: var(--error-color) !important;
 }
 
 .tool-body {

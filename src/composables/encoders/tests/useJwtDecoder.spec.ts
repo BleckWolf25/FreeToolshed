@@ -14,10 +14,11 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useJwtDecoder } from './useJwtDecoder';
+import { useJwtDecoder } from '../useJwtDecoder';
 
+// ---------- TESTS
 describe('useJwtDecoder composable', () => {
   it('initializes with empty token input and null decoded state', () => {
     const { jwtInput, decodedState, SAMPLE_JWT, faq, compatibility } = useJwtDecoder();

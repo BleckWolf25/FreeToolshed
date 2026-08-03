@@ -14,10 +14,11 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useUuidGenerator } from './useUuidGenerator';
+import { useUuidGenerator } from '../useUuidGenerator';
 
+// ---------- TESTS
 describe('useUuidGenerator composable', () => {
   it('initializes with default version v4 and count 5', () => {
     const { version, count, uppercase, hyphens, faq, compatibility } = useUuidGenerator();

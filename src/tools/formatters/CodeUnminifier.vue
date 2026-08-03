@@ -1,26 +1,26 @@
 <!--
 /**
- * @file Minifier.vue
+ * @file CodeUnminifier.vue
  *
- * @version 2.0.0
+ * @version 1.0.0
  * @author BleckWolf25
  * @license MIT
  *
- * @summary Code Minifier & Compression tool component for JSON, CSS, and JS
+ * @summary Code UnMinifier & Beautifier tool component
  *
  * @description
- * Minifies and compresses JSON, CSS, and JavaScript code to reduce file payload size.
+ * Unminifies, expands, and formats minified JSON, CSS, JavaScript, HTML, and SQL code snippets
+ * with customizable indent spacing and real-time statistics.
  *
- * @since 01/08/2026
- * @updated 03/08/2026
+ * @since 03/08/2026
  */
 -->
 <template>
   <ToolCard
-    id="minifier"
-    title="Code Minifier (JSON, CSS, JS)"
-    description="Minify and compress JSON, CSS, and JavaScript code to reduce file payload size."
-    tier="Tier 2"
+    id="code-unminifier"
+    title="Code UnMinifier & Beautifier"
+    description="Format, beautify, and unminify compressed JSON, CSS, JavaScript, HTML, and SQL snippets."
+    tier="Tier 1"
     :can-copy="!!outputCode"
     :can-download="!!outputCode"
     :can-reset="true"
@@ -33,62 +33,70 @@
     @sample="handleSample"
   >
     <template #icon>
-      <CompressOutlined />
+      <CodeOutlined />
     </template>
 
-    <div class="minify-tool-layout">
-      <!-- LANGUAGE & ACTION TOOLBAR -->
+    <div class="unminifier-tool-layout">
+      <!-- CONFIGURATION TOOLBAR -->
       <div class="toolbar-card">
         <div class="toolbar-controls">
           <div class="control-item">
-            <label>TARGET LANGUAGE</label>
-            <a-radio-group v-model:value="lang" button-style="solid" @change="processCode">
-              <a-radio-button value="json">JSON</a-radio-button>
-              <a-radio-button value="css">CSS</a-radio-button>
-              <a-radio-button value="js">JavaScript</a-radio-button>
-            </a-radio-group>
+            <label>LANGUAGE</label>
+            <a-select v-model:value="lang" style="width: 170px" @change="unminifyCode">
+              <a-select-option value="js">JavaScript (JS)</a-select-option>
+              <a-select-option value="css">CSS</a-select-option>
+              <a-select-option value="json">JSON</a-select-option>
+              <a-select-option value="html">HTML / XML</a-select-option>
+              <a-select-option value="sql">SQL Query</a-select-option>
+            </a-select>
           </div>
 
-          <a-button type="primary" class="workbench-primary-btn" @click="minifyCode">
-            <template #icon><CompressOutlined /></template>
-            MINIFY CODE
-          </a-button>
+          <div class="control-item">
+            <label>INDENT SPACING</label>
+            <a-select v-model:value="indentType" style="width: 140px" @change="unminifyCode">
+              <a-select-option value="2spaces">2 Spaces</a-select-option>
+              <a-select-option value="4spaces">4 Spaces</a-select-option>
+              <a-select-option value="tabs">Tabs</a-select-option>
+            </a-select>
+          </div>
 
-          <a-button type="default" class="workbench-btn" @click="beautifyCode">
-            BEAUTIFY / PRETTIFY
+          <a-button type="primary" class="workbench-primary-btn" @click="unminifyCode">
+            <template #icon><CodeOutlined /></template>
+            UNMINIFY CODE
           </a-button>
         </div>
       </div>
 
-      <!-- EDITOR PANELS GRID -->
-      <div class="editor-grid">
+      <!-- INPUT & OUTPUT PANELS -->
+      <div class="unminifier-panels-grid">
+        <!-- INPUT CODE PANEL -->
         <div class="panel">
           <div class="panel-header">
-            <span class="panel-title">[ORIGINAL_INPUT] SOURCE CODE</span>
-            <span class="byte-count">{{ inputCode.length }} CHARS</span>
+            <span class="panel-title">[MINIFIED_INPUT] PASTE CODE HERE</span>
+            <span v-if="inputCode" class="byte-count">{{ inputCode.length }} CHARS</span>
           </div>
           <a-textarea
             v-model:value="inputCode"
-            placeholder="Paste raw JSON, CSS, or JS snippet here..."
-            :rows="14"
+            placeholder="Paste minified JSON, CSS, JS, HTML, or SQL code here..."
+            :rows="12"
             class="code-editor block-cursor"
-            @input="processCode"
+            @input="unminifyCode"
           />
         </div>
 
+        <!-- UNMINIFIED OUTPUT PANEL -->
         <div class="panel">
           <div class="panel-header">
-            <span class="panel-title">[MINIFIED_OUTPUT] COMPRESSED PREVIEW</span>
+            <span class="panel-title">[UNMINIFIED_OUTPUT] FORMATTED PREVIEW</span>
             <span v-if="stats" class="stats-pill">
-              SAVINGS: {{ stats.savings }}% ({{ stats.originalBytes }}B →
-              {{ stats.minifiedBytes }}B)
+              {{ stats.unminifiedBytes }} BYTES ({{ stats.expansionPercent }})
             </span>
           </div>
           <textarea
             :value="outputCode"
             readonly
-            placeholder="(Minified code will appear here...)"
-            rows="14"
+            placeholder="(Unminified code will render here...)"
+            rows="12"
             class="code-editor output-textarea"
           ></textarea>
         </div>
@@ -99,30 +107,29 @@
 
 <script setup lang="ts">
 // ---------- IMPORTS
-import { useMinifier } from '../../composables/formatters/useMinifier';
-import { CompressOutlined } from '@ant-design/icons-vue';
+import { useCodeUnminifier } from '../../composables/formatters/useCodeUnminifier';
+import { CodeOutlined } from '@ant-design/icons-vue';
 import ToolCard from '../../components/ToolCard.vue';
 
 // ---------- COMPOSABLE USAGE
 const {
   faq,
   compatibility,
-  handleSample,
   lang,
+  indentType,
   inputCode,
   outputCode,
   stats,
-  processCode,
-  minifyCode,
-  beautifyCode,
+  unminifyCode,
+  handleSample,
   handleCopy,
   handleDownload,
   handleReset
-} = useMinifier();
+} = useCodeUnminifier();
 </script>
 
 <style scoped>
-.minify-tool-layout {
+.unminifier-tool-layout {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -163,22 +170,14 @@ const {
   height: 38px;
 }
 
-.workbench-btn {
-  font-family: var(--font-family) !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  margin-top: auto;
-  height: 38px;
-}
-
-.editor-grid {
+.unminifier-panels-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
-@media (max-width: 768px) {
-  .editor-grid {
+@media (max-width: 840px) {
+  .unminifier-panels-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -213,6 +212,15 @@ const {
   font-size: 10px;
 }
 
+.stats-pill {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--stamp-text);
+  background: var(--stamp-bg);
+  padding: 2px 6px;
+  border: 1px solid var(--border-strong);
+}
+
 .code-editor {
   border: none !important;
   resize: vertical;
@@ -227,6 +235,8 @@ const {
 }
 
 .output-textarea {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
   cursor: default;
 }
 </style>

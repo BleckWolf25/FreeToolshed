@@ -13,14 +13,14 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useMorseTranslator } from './useMorseTranslator';
+import { useMorseTranslator } from '../useMorseTranslator';
 
+// ---------- TESTS
 describe('useMorseTranslator composable', () => {
   it('initializes with default text and translates to Morse code on mount', () => {
-    const { mode, inputText, outputMorse, wpm, isPlaying, faq, compatibility } =
-      useMorseTranslator();
+    const { mode, inputText, wpm, isPlaying, faq, compatibility } = useMorseTranslator();
     expect(mode.value).toBe('textToMorse');
     expect(inputText.value).toBe('SOS FREE TOOLSHED');
     expect(wpm.value).toBe(15);

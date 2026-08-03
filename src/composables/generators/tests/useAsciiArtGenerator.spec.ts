@@ -13,13 +13,14 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useAsciiArtGenerator } from './useAsciiArtGenerator';
+import { useAsciiArtGenerator } from '../useAsciiArtGenerator';
 
+// ---------- TESTS
 describe('useAsciiArtGenerator composable', () => {
   it('initializes with default text "Toolshed" and font "Standard"', () => {
-    const { inputText, fontStyle, asciiArtOutput, faq, compatibility } = useAsciiArtGenerator();
+    const { inputText, fontStyle, faq, compatibility } = useAsciiArtGenerator();
     expect(inputText.value).toBe('Toolshed');
     expect(fontStyle.value).toBe('Standard');
     expect(faq.length).toBeGreaterThan(0);

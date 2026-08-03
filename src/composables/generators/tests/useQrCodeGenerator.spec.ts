@@ -14,10 +14,11 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useQrCodeGenerator } from './useQrCodeGenerator';
+import { useQrCodeGenerator } from '../useQrCodeGenerator';
 
+// ---------- TESTS
 describe('useQrCodeGenerator composable', () => {
   it('initializes with default text "https://freetoolshed.dev" and size 256', () => {
     const { qrText, qrSize, errorCorrection, fgColor, bgColor, faq, compatibility } =
@@ -50,7 +51,7 @@ describe('useQrCodeGenerator composable', () => {
   it('loads sample text and resets state', async () => {
     const { qrText, qrDataUrl, handleSample, handleReset } = useQrCodeGenerator();
     handleSample();
-    expect(qrText.value).toBe('https://freetoolshed.com');
+    expect(qrText.value).toBe('https://freetoolshed.vercel.app');
 
     handleReset();
     expect(qrText.value).toBe('');

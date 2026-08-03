@@ -14,10 +14,11 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useTextCaseConverter } from './useTextCaseConverter';
+import { useTextCaseConverter } from '../useTextCaseConverter';
 
+// ---------- TESTS
 describe('useTextCaseConverter composable', () => {
   it('initializes with default text input and computed statistics', () => {
     const { inputValue, charCount, wordCount, lineCount, faq, compatibility } =

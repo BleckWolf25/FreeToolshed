@@ -13,14 +13,14 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useYamlParser } from './useYamlParser';
+import { useYamlParser } from '../useYamlParser';
 
+// ---------- TESTS
 describe('useYamlParser composable', () => {
   it('initializes with default mode "yamlToJson" and default YAML input state', () => {
-    const { mode, inputValue, outputValue, errorMessage, SAMPLES, faq, compatibility } =
-      useYamlParser();
+    const { mode, inputValue, errorMessage, SAMPLES, faq, compatibility } = useYamlParser();
     expect(mode.value).toBe('yamlToJson');
     expect(inputValue.value).toBeTruthy();
     expect(errorMessage.value).toBe('');

@@ -13,14 +13,14 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useMarkdownConverter } from './useMarkdownConverter';
+import { useMarkdownConverter } from '../useMarkdownConverter';
 
+// ---------- TESTS
 describe('useMarkdownConverter composable', () => {
   it('initializes with default Markdown content, preview viewMode, and renders initial HTML on mount', () => {
-    const { markdownInput, htmlOutput, viewMode, SAMPLE_MD, faq, compatibility } =
-      useMarkdownConverter();
+    const { markdownInput, viewMode, SAMPLE_MD, faq, compatibility } = useMarkdownConverter();
     expect(markdownInput.value).toBeTruthy();
     expect(viewMode.value).toBe('preview');
     expect(SAMPLE_MD).toBeTruthy();

@@ -13,10 +13,11 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useJsonFormatter } from './useJsonFormatter';
+import { useJsonFormatter } from '../useJsonFormatter';
 
+// ---------- TESTS
 describe('useJsonFormatter composable', () => {
   it('initializes with empty input state and default indent size 2', () => {
     const { inputValue, outputValue, indentSize, isValid, errorMessage, SAMPLE_JSON, faq } =

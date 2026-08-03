@@ -11,7 +11,7 @@
  * Manages reactive state, validation, conversion, and helper actions for the QrCodeGenerator component.
  *
  * @since 01/08/2026
- * @updated 02/08/2026
+ * @updated 03/08/2026
  */
 // ---------- IMPORTS
 import { ref, onMounted } from 'vue';
@@ -29,7 +29,7 @@ export function useQrCodeGenerator() {
   ];
   const compatibility = ['PNG', 'SVG', 'JPEG'];
   const handleSample = () => {
-    qrText.value = 'https://freetoolshed.com';
+    qrText.value = 'https://freetoolshed.vercel.app';
     generateQrCode();
   };
 

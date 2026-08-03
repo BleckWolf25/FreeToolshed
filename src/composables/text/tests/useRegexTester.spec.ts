@@ -14,10 +14,11 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useRegexTester } from './useRegexTester';
+import { useRegexTester } from '../useRegexTester';
 
+// ---------- TESTS
 describe('useRegexTester composable', () => {
   it('initializes with default email pattern, flags, and sample text', () => {
     const { pattern, flags, testText, PRESET_PATTERNS, faq, compatibility } = useRegexTester();

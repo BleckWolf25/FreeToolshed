@@ -14,10 +14,11 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useColorConverter } from './useColorConverter';
+import { useColorConverter } from '../useColorConverter';
 
+// ---------- TESTS
 describe('useColorConverter composable', () => {
   it('initializes with default HEX color #1890FF and computed representations', () => {
     const { hexColor, rgbString, hslString, faq, compatibility } = useColorConverter();

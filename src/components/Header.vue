@@ -2,18 +2,18 @@
 /**
  * @file Header.vue
  *
- * @version 1.0.0
+ * @version 2.0.0
  * @author BleckWolf25
  * @license MIT
  *
- * @summary Main navigation header bar with brand title, search modal, and theme toggle
+ * @summary Main navigation header bar with stamped brand title, hard-edged search modal, and theme toggle
  *
  * @description
- * Provides top navbar, quick global search modal with keyboard shortcut (Cmd+K / Ctrl+K),
+ * Provides top navbar, quick global search modal with block cursor and <kbd> keycaps (Cmd+K / Ctrl+K),
  * dark/light theme switch, and brand navigation link.
  *
  * @since 01/08/2026
- * @updated 01/08/2026
+ * @updated 03/08/2026
  */
 -->
 <template>
@@ -23,50 +23,64 @@
         <div class="logo-box">
           <ToolOutlined class="logo-icon" />
         </div>
-        <span class="logo-text">FreeToolshed</span>
-        <a-tag color="blue" class="logo-badge">Client-Side</a-tag>
+        <div class="logo-text-wrap">
+          <span class="logo-text">FREETOOLSHED</span>
+          <span class="logo-sub">[CLIENT-SIDE WORKBENCH]</span>
+        </div>
       </router-link>
     </div>
 
     <div class="header-center">
       <div class="search-trigger" @click="openSearchModal">
-        <SearchOutlined />
-        <span>Search tools...</span>
-        <kbd class="hotkey-badge">{{ isMac ? '⌘K' : 'Ctrl+K' }}</kbd>
+        <SearchOutlined class="search-trigger-icon" />
+        <span class="search-trigger-text">SEARCH TOOLS...</span>
+        <kbd class="hotkey-badge">{{ isMac ? '⌘K' : 'CTRL+K' }}</kbd>
       </div>
     </div>
 
     <div class="header-right">
-      <a-tooltip :title="theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
-        <a-button type="text" shape="circle" class="theme-toggle-btn" @click="toggleTheme">
+      <a-tooltip :title="theme === 'dark' ? 'SWITCH TO LIGHT MODE' : 'SWITCH TO DARK MODE'">
+        <a-button type="text" class="workbench-btn" @click="toggleTheme">
           <template #icon>
             <BulbFilled v-if="theme === 'dark'" style="color: #faad14" />
             <BulbOutlined v-else />
           </template>
+          <span class="btn-label">{{ theme === 'dark' ? '[LIGHT]' : '[DARK]' }}</span>
         </a-button>
       </a-tooltip>
-      <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="github-link">
+      <a
+        href="https://github.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="github-link"
+        title="Source Code"
+      >
         <GithubOutlined />
       </a>
     </div>
 
-    <!-- GLOBAL SEARCH MODAL -->
+    <!-- GLOBAL SEARCH MODAL (HARD-EDGED BENCH MODAL) -->
     <a-modal
       v-model:open="searchModalVisible"
       :footer="null"
       :closable="false"
-      width="600px"
-      class="search-modal"
+      width="640px"
+      class="hard-edged-search-modal"
       @after-close="searchQuery = ''"
     >
+      <div class="modal-workbench-header">
+        <span class="modal-title-stamp">[SEARCH_INDEX]</span>
+        <kbd class="kbd-key" @click="searchModalVisible = false">ESC</kbd>
+      </div>
+
       <div class="search-modal-input-wrap">
         <SearchOutlined class="search-modal-icon" />
         <input
           ref="searchInputRef"
           v-model="searchQuery"
           type="text"
-          placeholder="Type to search tools (e.g. JSON, JWT, Regex, Base64)..."
-          class="search-modal-input"
+          placeholder="TYPE QUERY (e.g. JSON, JWT, REGEX, BASE64)..."
+          class="search-modal-input block-cursor"
           @keydown.down.prevent="navigateResults(1)"
           @keydown.up.prevent="navigateResults(-1)"
           @keydown.enter.prevent="selectCurrentResult"
@@ -75,24 +89,33 @@
 
       <div class="search-results">
         <div v-if="filteredTools.length === 0" class="no-results">
-          No tools matching "{{ searchQuery }}"
+          NO MATCHING TOOLS FOR "{{ searchQuery }}"
         </div>
         <div
           v-for="(tool, index) in filteredTools"
           :key="tool.id"
-          :class="['search-item', { active: index === selectedIndex }]"
+          :class="['pegboard-row', { active: index === selectedIndex }]"
           @click="selectTool(tool)"
           @mouseenter="selectedIndex = index"
         >
-          <div class="search-item-icon">
+          <div class="pegboard-icon">
             <component :is="tool.icon" />
           </div>
-          <div class="search-item-info">
-            <div class="search-item-name">{{ tool.name }}</div>
-            <div class="search-item-desc">{{ tool.description }}</div>
+          <div class="pegboard-info">
+            <div class="pegboard-name">{{ tool.name }}</div>
+            <div class="pegboard-desc">{{ tool.shortDesc || tool.description }}</div>
           </div>
-          <a-tag :color="getCategoryColor(tool.category)">{{ tool.category }}</a-tag>
+          <div class="pegboard-cat-badge">
+            {{ tool.category }}
+          </div>
+          <div class="pegboard-arrow">›</div>
         </div>
+      </div>
+
+      <div class="modal-workbench-footer">
+        <span class="footer-hint"><kbd class="kbd-key">↑↓</kbd> NAVIGATE</span>
+        <span class="footer-hint"><kbd class="kbd-key">↵</kbd> SELECT</span>
+        <span class="footer-hint"><kbd class="kbd-key">ESC</kbd> CLOSE</span>
       </div>
     </a-modal>
   </a-layout-header>
@@ -109,10 +132,10 @@ import {
   BulbFilled,
   GithubOutlined
 } from '@ant-design/icons-vue';
-import { toolsRegistry } from '../router/toolsRegistry.js';
+import { toolsRegistry, ToolItem } from '../router/toolsRegistry.js';
 
 // ---------- PROPS & EMITS
-const props = defineProps({
+defineProps({
   theme: {
     type: String,
     required: true
@@ -136,6 +159,7 @@ const filteredTools = computed(() => {
   return toolsRegistry.filter(
     (t) =>
       t.name.toLowerCase().includes(q) ||
+      t.shortDesc.toLowerCase().includes(q) ||
       t.description.toLowerCase().includes(q) ||
       t.tags.some((tag) => tag.toLowerCase().includes(q))
   );
@@ -156,7 +180,7 @@ const openSearchModal = () => {
   });
 };
 
-const selectTool = (tool: any) => {
+const selectTool = (tool: ToolItem) => {
   searchModalVisible.value = false;
   router.push(tool.path);
 };
@@ -173,31 +197,9 @@ const selectCurrentResult = () => {
   }
 };
 
-const getCategoryColor = (c: any) => {
-  switch (c) {
-    case 'Formatters & Parsers':
-      return 'blue';
-    case 'Encoders & Decoders':
-      return 'green';
-    case 'Generators':
-      return 'orange';
-    case 'Text & Code':
-      return 'purple';
-    case 'Web & Misc':
-      return 'magenta';
-    default:
-      return 'default';
-  }
-};
-
 // ---------- KEYBOARD SHORTCUT (CMD+K / CTRL+K)
-const handleKeyDown = (e: {
-  metaKey: any;
-  ctrlKey: any;
-  key: string;
-  preventDefault: () => void;
-}) => {
-  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+const handleKeyDown = (e: KeyboardEvent) => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
     e.preventDefault();
     openSearchModal();
   }
@@ -219,52 +221,73 @@ onUnmounted(() => {
   justify-content: space-between;
   padding: 0 24px;
   background: var(--card-bg);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 2px solid var(--border-strong);
   height: 64px;
+  line-height: 1.2;
   position: sticky;
   top: 0;
   z-index: 100;
+  font-family: var(--font-family);
 }
 
 .header-left {
   display: flex;
   align-items: center;
+  height: 100%;
 }
 
 .logo-link {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   text-decoration: none;
+  height: 100%;
 }
 
 .logo-box {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  background: #1890ff;
+  width: 38px;
+  height: 38px;
+  background: var(--stamp-bg);
+  color: var(--stamp-text);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
   font-size: 20px;
+  border: 1px solid var(--border-strong);
+  flex-shrink: 0;
+}
+
+.logo-text-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1;
 }
 
 .logo-text {
-  font-size: 18px;
+  font-family: var(--font-display);
+  font-size: 20px;
   font-weight: 700;
   color: var(--text-primary);
-  letter-spacing: -0.5px;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  margin: 0;
+  display: block;
 }
 
-.logo-badge {
-  font-size: 10px;
-  line-height: 14px;
+.logo-sub {
+  font-family: var(--font-family);
+  font-size: 9px;
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+  line-height: 1;
+  margin-top: 3px;
+  display: block;
 }
 
 .header-center {
   flex: 1;
-  max-width: 420px;
+  max-width: 440px;
   margin: 0 24px;
 }
 
@@ -273,37 +296,35 @@ onUnmounted(() => {
   align-items: center;
   gap: 10px;
   background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  padding: 6px 12px;
-  color: var(--text-secondary);
+  border: 1px solid var(--border-strong);
+  padding: 6px 14px;
+  color: var(--text-primary);
   cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s ease;
-  width: 250px;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
+  font-size: 12px;
+  font-family: var(--font-family);
+  font-weight: 600;
+  transition: none;
+  width: 280px;
+  user-select: none;
 }
 
 .search-trigger:hover {
-  border-color: #1890ff;
-  color: var(--text-primary);
-  background: var(--card-bg);
+  background: var(--invert-bg);
+  color: var(--invert-text);
+}
+
+.search-trigger:hover .search-trigger-icon,
+.search-trigger:hover .search-trigger-text {
+  color: var(--invert-text);
+}
+
+.search-trigger:hover .hotkey-badge {
+  background: var(--invert-text);
+  color: var(--invert-bg);
 }
 
 .hotkey-badge {
   margin-left: auto;
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  padding: 2px 6px;
-  font-size: 12px;
-  color: var(--text-secondary);
-  font-family: inherit;
-  font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 32px;
 }
 
 .header-right {
@@ -312,8 +333,23 @@ onUnmounted(() => {
   gap: 16px;
 }
 
-.theme-toggle-btn {
-  font-size: 18px;
+.workbench-btn {
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  height: 34px;
+  padding: 0 12px;
+}
+
+.workbench-btn:hover {
+  background: var(--invert-bg) !important;
+  color: var(--invert-text) !important;
+  border-color: var(--border-strong) !important;
 }
 
 .github-link {
@@ -321,20 +357,51 @@ onUnmounted(() => {
   color: var(--text-primary);
   display: flex;
   align-items: center;
+  padding: 6px;
+  border: 1px solid var(--border-color);
 }
 
-/* SEARCH MODAL STYLES */
+.github-link:hover {
+  background: var(--invert-bg);
+  color: var(--invert-text);
+}
+
+/* HARD-EDGED SEARCH MODAL */
+:deep(.hard-edged-search-modal .ant-modal-content) {
+  border: 2px solid var(--border-strong) !important;
+  box-shadow: 8px 8px 0px var(--border-strong) !important;
+  padding: 0 !important;
+  background: var(--card-bg) !important;
+}
+
+.modal-workbench-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-color);
+}
+
+.modal-title-stamp {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+}
+
 .search-modal-input-wrap {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border-color);
+  padding: 14px 16px;
+  border-bottom: 2px solid var(--border-strong);
+  background: var(--card-bg);
 }
 
 .search-modal-icon {
   font-size: 18px;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .search-modal-input {
@@ -342,82 +409,104 @@ onUnmounted(() => {
   border: none;
   outline: none;
   background: transparent;
-  font-size: 16px;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 600;
   color: var(--text-primary);
+  text-transform: uppercase;
+}
+
+.search-modal-input.block-cursor {
+  caret-shape: block;
 }
 
 .search-results {
   max-height: 380px;
   overflow-y: auto;
-  padding: 8px;
 }
 
-.search-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-.search-item.active {
-  background: var(--bg-color);
-}
-
-.search-item-icon {
-  font-size: 18px;
-  color: #1890ff;
-}
-
-.search-item-info {
+.pegboard-info {
   flex: 1;
 }
 
-.search-item-name {
-  font-weight: 600;
-  font-size: 14px;
-  color: var(--text-primary);
+.pegboard-name {
+  font-weight: 700;
+  font-size: 13px;
 }
 
-.search-item-desc {
-  font-size: 12px;
+.pegboard-desc {
+  font-size: 11px;
   color: var(--text-secondary);
+}
+
+.pegboard-cat-badge {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  border: 1px solid var(--border-color);
+  padding: 2px 6px;
+}
+
+.pegboard-arrow {
+  font-size: 16px;
+  font-weight: 700;
+  margin-left: 8px;
+}
+
+.pegboard-row.active {
+  background: var(--invert-bg) !important;
+  color: var(--invert-text) !important;
+}
+
+.pegboard-row.active .pegboard-icon,
+.pegboard-row.active .pegboard-name,
+.pegboard-row.active .pegboard-desc,
+.pegboard-row.active .pegboard-cat-badge,
+.pegboard-row.active .pegboard-arrow {
+  color: var(--invert-text) !important;
+  border-color: var(--invert-text) !important;
 }
 
 .no-results {
-  padding: 24px;
+  padding: 32px;
   text-align: center;
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
   color: var(--text-secondary);
+}
+
+.modal-workbench-footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-color);
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.footer-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 @media (max-width: 768px) {
   .app-header {
-    padding: 0 16px;
+    padding: 0 12px;
   }
-  .logo-text,
-  .logo-badge {
+  .logo-sub {
     display: none;
   }
   .search-trigger {
     width: auto;
-    min-width: 40px;
-    justify-content: center;
-    padding: 0 8px;
+    padding: 6px 10px;
   }
-  .search-trigger span,
+  .search-trigger-text,
   .hotkey-badge {
     display: none;
-  }
-  .header-left,
-  .header-right {
-    flex: none;
-  }
-  .header-center {
-    flex: 1;
-    display: flex;
-    justify-content: center;
   }
 }
 </style>

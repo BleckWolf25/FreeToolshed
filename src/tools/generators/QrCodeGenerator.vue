@@ -2,7 +2,7 @@
 /**
  * @file QrCodeGenerator.vue
  *
- * @version 1.0.0
+ * @version 2.0.0
  * @author BleckWolf25
  * @license MIT
  *
@@ -12,7 +12,7 @@
  * Generates custom QR codes from URLs or text with size, margin, color, and SVG/PNG download options.
  *
  * @since 01/08/2026
- * @updated 02/08/2026
+ * @updated 03/08/2026
  */
 -->
 <template>
@@ -41,13 +41,13 @@
         <div class="controls-column">
           <div class="panel">
             <div class="panel-header">
-              <span class="panel-title">QR Content Input</span>
+              <span class="panel-title">[INPUT_TEXT] QR CONTENT</span>
             </div>
             <a-textarea
               v-model:value="qrText"
-              placeholder="Enter URL or text to encode into QR code..."
+              placeholder="ENTER URL OR TEXT TO ENCODE INTO QR CODE..."
               :rows="4"
-              class="code-editor"
+              class="code-editor block-cursor"
               @input="generateQrCode"
             />
           </div>
@@ -82,22 +82,12 @@
 
               <div class="option-item">
                 <label>Foreground Color</label>
-                <input
-                  type="color"
-                  v-model="fgColor"
-                  class="color-picker-input"
-                  @change="generateQrCode"
-                />
+                <WorkbenchColorPicker v-model:value="fgColor" @change="generateQrCode" />
               </div>
 
               <div class="option-item">
                 <label>Background Color</label>
-                <input
-                  type="color"
-                  v-model="bgColor"
-                  class="color-picker-input"
-                  @change="generateQrCode"
-                />
+                <WorkbenchColorPicker v-model:value="bgColor" @change="generateQrCode" />
               </div>
             </div>
           </div>
@@ -109,19 +99,19 @@
             <h3>QR Code Preview</h3>
             <div class="qr-image-wrapper">
               <img v-if="qrDataUrl" :src="qrDataUrl" alt="QR Code Preview" class="qr-img" />
-              <div v-else class="qr-placeholder">Type text to render QR Code</div>
+              <div v-else class="qr-placeholder">[TYPE TEXT TO RENDER QR CODE]</div>
             </div>
 
-            <a-space wrap class="download-btn-group">
-              <a-button type="primary" size="large" :disabled="!qrDataUrl" @click="downloadPng">
+            <div class="download-btn-group">
+              <a-button class="workbench-btn" :disabled="!qrDataUrl" @click="downloadPng">
                 <template #icon><DownloadOutlined /></template>
-                Download PNG
+                DOWNLOAD PNG
               </a-button>
-              <a-button type="default" size="large" :disabled="!qrDataUrl" @click="downloadSvg">
+              <a-button class="workbench-btn" :disabled="!qrDataUrl" @click="downloadSvg">
                 <template #icon><DownloadOutlined /></template>
-                Download SVG
+                DOWNLOAD SVG
               </a-button>
-            </a-space>
+            </div>
           </div>
         </div>
       </div>
@@ -134,6 +124,7 @@
 import { useQrCodeGenerator } from '../../composables/generators/useQrCodeGenerator';
 import { QrcodeOutlined, DownloadOutlined } from '@ant-design/icons-vue';
 import ToolCard from '../../components/ToolCard.vue';
+import WorkbenchColorPicker from '../../components/WorkbenchColorPicker.vue';
 
 // ---------- COMPOSABLE USAGE
 const {
@@ -158,6 +149,7 @@ const {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  font-family: var(--font-family);
 }
 
 .qr-grid {
@@ -183,7 +175,6 @@ const {
   flex-direction: column;
   background: var(--bg-color);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
   overflow: hidden;
 }
 
@@ -191,8 +182,9 @@ const {
   padding: 8px 12px;
   background: var(--card-bg);
   border-bottom: 1px solid var(--border-color);
-  font-weight: 600;
-  font-size: 13px;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
 }
 
 .code-editor {
@@ -205,11 +197,17 @@ const {
 .config-card {
   background: var(--bg-color);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.config-card h3 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
 }
 
 .options-grid {
@@ -225,17 +223,10 @@ const {
 }
 
 .option-item label {
-  font-size: 13px;
+  font-size: 11px;
+  font-weight: 700;
   color: var(--text-secondary);
-}
-
-.color-picker-input {
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  height: 36px;
-  width: 100%;
-  cursor: pointer;
-  background: transparent;
+  text-transform: uppercase;
 }
 
 .preview-column {
@@ -245,8 +236,7 @@ const {
 
 .qr-preview-card {
   background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border: 2px solid var(--border-strong);
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -255,31 +245,56 @@ const {
   text-align: center;
 }
 
+.qr-preview-card h3 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+
 .qr-image-wrapper {
   width: 240px;
   height: 240px;
-  border-radius: 12px;
   background: #ffffff;
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--border-strong);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .qr-img {
   max-width: 100%;
   max-height: 100%;
-  border-radius: 8px;
 }
 
 .qr-placeholder {
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: 11px;
+  font-weight: 700;
   padding: 16px;
 }
 
 .download-btn-group {
+  display: flex;
+  gap: 10px;
   justify-content: center;
+  width: 100%;
+}
+
+.workbench-btn {
+  font-family: var(--font-family);
+  font-size: 11px;
+  font-weight: 700;
+  border: 1px solid var(--border-strong);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  height: 36px;
+  padding: 0 12px;
+  text-transform: uppercase;
+}
+
+.workbench-btn:hover {
+  background: var(--invert-bg) !important;
+  color: var(--invert-text) !important;
 }
 </style>

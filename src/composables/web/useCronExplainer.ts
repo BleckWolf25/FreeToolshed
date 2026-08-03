@@ -1,7 +1,7 @@
 /**
  * @file useCronExplainer.ts
  *
- * @version 1.0.0
+ * @version 2.0.0
  * @author BleckWolf25
  * @license MIT
  *
@@ -9,9 +9,10 @@
  *
  * @description
  * Manages reactive state, validation, conversion, and helper actions for the CronExplainer component.
+ * Uses cronstrue for human readable descriptions and cron-parser for next execution dates.
  *
  * @since 01/08/2026
- * @updated 02/08/2026
+ * @updated 03/08/2026
  */
 // ---------- IMPORTS
 import { ref, watch, onMounted } from 'vue';
@@ -46,29 +47,45 @@ export function useCronExplainer() {
     { label: 'Weekdays at 9 AM', exp: '0 9 * * 1-5' }
   ];
 
+  // Helper to parse interval across different cron-parser module export targets
+  const getCronInterval = (exp: string) => {
+    const cp = cronParser as any;
+    if (cp && cp.CronExpressionParser && typeof cp.CronExpressionParser.parse === 'function') {
+      return cp.CronExpressionParser.parse(exp);
+    }
+    if (cp && typeof cp.parse === 'function') {
+      return cp.parse(exp);
+    }
+    if (cp && typeof cp.parseExpression === 'function') {
+      return cp.parseExpression(exp);
+    }
+    throw new Error('cron-parser engine could not be initialized');
+  };
+
   // ---------- METHODS
   const parseCron = () => {
     cronError.value = '';
     humanExplanation.value = '';
     nextDates.value = [];
 
-    if (!cronExpression.value.trim()) return;
+    const exp = cronExpression.value.trim();
+    if (!exp) return;
 
     try {
       // Human readable text
-      humanExplanation.value = cronstrue.toString(cronExpression.value.trim(), {
+      humanExplanation.value = cronstrue.toString(exp, {
         use24HourTimeFormat: true
       });
 
       // Next scheduled execution dates
-      const interval = cronParser.parse(cronExpression.value.trim());
+      const interval = getCronInterval(exp);
       const dates: string[] = [];
       for (let i = 0; i < 5; i++) {
         dates.push(interval.next().toString());
       }
       nextDates.value = dates;
     } catch (e: any) {
-      cronError.value = 'Invalid Cron Expression: ' + e.message;
+      cronError.value = 'Invalid Cron Expression: ' + (e.message || e);
     }
   };
 

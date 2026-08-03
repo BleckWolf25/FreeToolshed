@@ -2,7 +2,7 @@
 /**
  * @file JsonFormatter.vue
  *
- * @version 1.0.0
+ * @version 2.0.0
  * @author BleckWolf25
  * @license MIT
  *
@@ -12,7 +12,7 @@
  * Parses raw JSON string input, validates syntax, displays formatted output with indent controls, offers minification, copy, and download.
  *
  * @since 01/08/2026
- * @updated 02/08/2026
+ * @updated 03/08/2026
  */
 -->
 <template>
@@ -21,8 +21,8 @@
     title="JSON Formatter & Validator"
     description="Format, minify, validate, and inspect JSON documents with detailed error details."
     tier="Tier 1"
-    :can-copy="true"
-    :can-download="true"
+    :can-copy="!!outputValue"
+    :can-download="!!outputValue"
     :can-reset="true"
     :has-sample="true"
     :faq="faq"
@@ -38,28 +38,26 @@
 
     <div class="json-tool-layout">
       <!-- CONTROLS TOOLBAR -->
-      <div class="toolbar-controls">
-        <a-space wrap align="center">
-          <a-button type="primary" @click="formatJson">
+      <div class="toolbar-card">
+        <div class="toolbar-controls">
+          <a-button type="primary" class="workbench-primary-btn" @click="formatJson">
             <template #icon><AlignLeftOutlined /></template>
-            Prettify JSON
+            PRETTIFY JSON
           </a-button>
 
-          <a-button type="default" @click="minifyJson">
+          <a-button type="default" class="workbench-btn" @click="minifyJson">
             <template #icon><CompressOutlined /></template>
-            Minify JSON
+            MINIFY JSON
           </a-button>
 
-          <a-select v-model:value="indentSize" style="width: 130px" @change="formatJson">
-            <a-select-option :value="2">2 Spaces</a-select-option>
-            <a-select-option :value="4">4 Spaces</a-select-option>
-            <a-select-option :value="8">8 Spaces</a-select-option>
-          </a-select>
-        </a-space>
-
-        <div v-if="isValid !== null" class="status-indicator">
-          <a-tag v-if="isValid" color="success">Valid JSON</a-tag>
-          <a-tag v-else color="error">Invalid JSON Syntax</a-tag>
+          <div class="control-item">
+            <label>INDENT SPACING</label>
+            <a-select v-model:value="indentSize" style="width: 130px" @change="formatJson">
+              <a-select-option :value="2">2 Spaces</a-select-option>
+              <a-select-option :value="4">4 Spaces</a-select-option>
+              <a-select-option :value="8">8 Spaces</a-select-option>
+            </a-select>
+          </div>
         </div>
       </div>
 
@@ -78,14 +76,14 @@
         <!-- INPUT PANEL -->
         <div class="panel">
           <div class="panel-header">
-            <span class="panel-title">Input JSON</span>
-            <span class="char-count">{{ inputValue.length }} chars</span>
+            <span class="panel-title">[RAW_INPUT] JSON SOURCE</span>
+            <span class="byte-count">{{ inputValue.length }} CHARS</span>
           </div>
           <a-textarea
             v-model:value="inputValue"
-            placeholder="Paste raw JSON here..."
-            :rows="16"
-            class="code-editor"
+            placeholder="Paste raw JSON string here..."
+            :rows="14"
+            class="code-editor block-cursor"
             @input="handleInput"
           />
         </div>
@@ -93,16 +91,18 @@
         <!-- OUTPUT PANEL -->
         <div class="panel">
           <div class="panel-header">
-            <span class="panel-title">Formatted Output</span>
-            <span class="char-count">{{ outputValue.length }} chars</span>
+            <span class="panel-title">[FORMATTED_OUTPUT] JSON RESULT</span>
+            <span v-if="isValid !== null" class="stats-pill">
+              {{ isValid ? '[VALID SYNTAX]' : '[INVALID SYNTAX]' }}
+            </span>
           </div>
-          <a-textarea
+          <textarea
             :value="outputValue"
             readonly
-            placeholder="Formatted JSON will appear here..."
-            :rows="16"
-            class="code-editor readonly-editor"
-          />
+            placeholder="(Formatted JSON output will appear here...)"
+            rows="14"
+            class="code-editor output-textarea"
+          ></textarea>
         </div>
       </div>
     </div>
@@ -138,14 +138,47 @@ const {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  font-family: var(--font-family);
+}
+
+.toolbar-card {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  padding: 14px 16px;
 }
 
 .toolbar-controls {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
+}
+
+.control-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.control-item label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+}
+
+.workbench-primary-btn {
+  font-family: var(--font-family) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  height: 38px;
+}
+
+.workbench-btn {
+  font-family: var(--font-family) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  height: 38px;
 }
 
 .error-alert {
@@ -169,7 +202,6 @@ const {
   flex-direction: column;
   background: var(--bg-color);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
   overflow: hidden;
 }
 
@@ -180,28 +212,35 @@ const {
   padding: 8px 12px;
   background: var(--card-bg);
   border-bottom: 1px solid var(--border-color);
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
 }
 
 .panel-title {
-  font-weight: 600;
-  font-size: 13px;
   color: var(--text-primary);
+  letter-spacing: 0.05em;
 }
 
-.char-count {
-  font-size: 11px;
+.byte-count {
   color: var(--text-secondary);
+  font-size: 10px;
 }
 
 .code-editor {
   border: none !important;
   resize: vertical;
-  border-radius: 0 !important;
   background: var(--code-bg) !important;
   color: var(--code-text) !important;
+  width: 100%;
+  padding: 14px;
+  font-family: var(--font-code) !important;
+  font-size: 13px;
+  line-height: 1.4;
+  outline: none;
 }
 
-.readonly-editor {
+.output-textarea {
   cursor: default;
 }
 </style>

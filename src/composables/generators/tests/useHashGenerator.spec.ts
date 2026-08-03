@@ -13,10 +13,11 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useHashGenerator } from './useHashGenerator';
+import { useHashGenerator } from '../useHashGenerator';
 
+// ---------- TESTS
 describe('useHashGenerator composable', () => {
   it('initializes with empty input text and computes empty hash results', () => {
     const { inputValue, hashResults, faq, compatibility } = useHashGenerator();

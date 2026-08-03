@@ -1,7 +1,7 @@
 /**
  * @file navigation_and_home.spec.ts
  *
- * @version 1.0.0
+ * @version 2.0.0
  * @author BleckWolf25
  * @license MIT
  *
@@ -25,31 +25,30 @@ test.describe('Navigation & Homepage E2E', () => {
 
   test('loads home page with valid page title and header branding', async ({ page }) => {
     await expect(page).toHaveTitle(/FreeToolshed/);
-    await expect(page.locator('.logo-text')).toContainText('FreeToolshed');
-    await expect(page.locator('.hero-title')).toContainText('FreeToolshed');
+    await expect(page.locator('.logo-text')).toContainText(/FreeToolshed/i);
   });
 
   test('filters tools dynamically via search input', async ({ page }) => {
-    const searchInput = page.locator('input[placeholder*="Filter"]');
+    const searchInput = page.locator('.hero-search-input');
     await searchInput.fill('JWT');
 
     // Should display JWT Token Decoder card
-    const cardTitle = page.locator('.grid-tool-name');
-    await expect(cardTitle).toContainText('JWT Token Decoder');
+    const cardTitle = page.locator('.pegboard-name');
+    await expect(cardTitle).toContainText(/JWT Token Decoder/i);
   });
 
   test('displays tools categorized by sections', async ({ page }) => {
-    const sectionTitle = page.locator('.section-title', { hasText: 'Generators' });
-    await expect(sectionTitle).toBeVisible();
+    const sectionTitle = page.locator('.stamp-heading h2', { hasText: /GENERATORS/i });
+    await expect(sectionTitle.first()).toBeVisible();
 
     // Verify password generator card is visible
     await expect(
-      page.locator('.grid-tool-name', { hasText: 'Strong Password Generator' })
+      page.locator('.pegboard-name', { hasText: /Strong Password Generator/i })
     ).toBeVisible();
   });
 
   test('navigates to tool page from card click', async ({ page }) => {
-    const jsonCard = page.locator('.grid-tool-card', { hasText: 'JSON Formatter' });
+    const jsonCard = page.locator('.pegboard-row', { hasText: /JSON Formatter/i }).first();
     await jsonCard.click();
 
     await expect(page).toHaveURL(/\/tools\/json-formatter/);

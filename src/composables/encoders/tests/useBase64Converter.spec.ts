@@ -14,10 +14,11 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useBase64Converter } from './useBase64Converter';
+import { useBase64Converter } from '../useBase64Converter';
 
+// ---------- TESTS
 describe('useBase64Converter composable', () => {
   it('initializes with default encode mode and empty input state', () => {
     const { mode, inputValue, outputValue, errorMessage, imagePreviewUrl, faq, compatibility } =

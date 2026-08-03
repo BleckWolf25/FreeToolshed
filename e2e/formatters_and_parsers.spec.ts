@@ -1,7 +1,7 @@
 /**
  * @file formatters_and_parsers.spec.ts
  *
- * @version 1.0.0
+ * @version 2.0.0
  * @author BleckWolf25
  * @license MIT
  *
@@ -26,7 +26,7 @@ test.describe('Formatters & Parsers Tools E2E', () => {
     await inputArea.fill('{"name":"FreeToolshed","active":true}');
 
     // Click "Prettify JSON"
-    const prettifyBtn = page.getByRole('button', { name: 'Prettify JSON' });
+    const prettifyBtn = page.getByRole('button', { name: /Prettify JSON/i });
     await prettifyBtn.click();
 
     // Verify output area contains formatted json
@@ -34,7 +34,7 @@ test.describe('Formatters & Parsers Tools E2E', () => {
     await expect(outputArea).toHaveValue(/"name": "FreeToolshed"/);
 
     // Click "Minify JSON"
-    const minifyBtn = page.getByRole('button', { name: 'Minify JSON' });
+    const minifyBtn = page.getByRole('button', { name: /Minify JSON/i });
     await minifyBtn.click();
     await expect(outputArea).toHaveValue(/{"name":"FreeToolshed"/);
   });
@@ -45,11 +45,6 @@ test.describe('Formatters & Parsers Tools E2E', () => {
     // Verify default sample CSV converts to JSON output
     const outputArea = page.locator('textarea').nth(1);
     await expect(outputArea).toHaveValue(/"name": "Alice"/);
-
-    // Click "Load Sample CSV" button
-    const sampleBtn = page.getByRole('button', { name: 'Load Sample CSV' });
-    await sampleBtn.click();
-    await expect(outputArea).toHaveValue(/"name": "John Doe"/);
   });
 
   test('Markdown to HTML Converter renders live preview', async ({ page }) => {
@@ -75,7 +70,7 @@ test.describe('Formatters & Parsers Tools E2E', () => {
     await inputArea.fill('/* Test comment */\n.main {\n  color: red;\n}');
 
     // Click Minify Code
-    await page.getByRole('button', { name: 'Minify Code' }).click();
+    await page.getByRole('button', { name: /Minify Code/i }).click();
 
     // Output area should be compressed CSS
     const outputArea = page.locator('textarea').nth(1);

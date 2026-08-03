@@ -14,10 +14,11 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useMinifier } from './useMinifier';
+import { useMinifier } from '../useMinifier';
 
+// ---------- TESTS
 describe('useMinifier composable', () => {
   it('initializes with default lang "json" and empty input state', () => {
     const { lang, inputCode, outputCode, stats, SAMPLES, faq, compatibility } = useMinifier();

@@ -14,13 +14,14 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useCronExplainer } from './useCronExplainer';
+import { useCronExplainer } from '../useCronExplainer';
 
+// ---------- TESTS
 describe('useCronExplainer composable', () => {
   it('initializes with default state and parses initial cron expression', () => {
-    const { cronExpression, humanExplanation, nextDates, cronError, PRESETS } = useCronExplainer();
+    const { cronExpression, PRESETS } = useCronExplainer();
     expect(cronExpression.value).toBe('*/15 * * * *');
     expect(PRESETS.length).toBe(4);
   });

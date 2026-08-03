@@ -2,23 +2,24 @@
 /**
  * @file App.vue
  *
- * @version 1.0.0
+ * @version 2.0.0
  * @author BleckWolf25
  * @license MIT
  *
  * @summary Root application component integrating layout shell and dynamic dark/light theming
  *
  * @description
- * Encloses the web application in Ant Design Vue's ConfigProvider, handles dark/light theme state
+ * Encloses the web application in Ant Design Vue's ConfigProvider re-themed to a brutalist,
+ * monochrome "Blueprint & Rugged Workbench" design language, handles dark/light theme state
  * switching, layout structural components (Header, Sidebar, Content, Footer), and router outlet.
  *
  * @since 01/08/2026
- * @updated 01/08/2026
+ * @updated 03/08/2026
  */
 -->
 <template>
   <a-config-provider :theme="antTheme">
-    <div :data-theme="theme" class="app-wrapper">
+    <div :data-theme="theme" class="app-wrapper dot-grid-bg">
       <a-layout class="app-layout">
         <!-- GLOBAL NAVBAR HEADER -->
         <Header :theme="theme" @toggle-theme="toggleTheme" />
@@ -55,16 +56,58 @@ import { storage } from './utils/storage.js';
 const theme = ref('light');
 
 // ---------- COMPUTED ANT DESIGN THEME TOKENS
+// Monochrome re-theme: zero border-radius, high-contrast primary buttons,
+// JetBrains Mono UI typeface, sharp bordered surfaces.
 const antTheme = computed(() => {
   const isDark = theme.value === 'dark';
+  const ink = isDark ? '#ffffff' : '#111111';
+  const inkHover = isDark ? '#cccccc' : '#333333';
+  const surface = isDark ? '#1c1c1c' : '#ffffff';
+  const border = isDark ? '#333333' : '#d6d6d2';
+  const primaryText = isDark ? '#1c1c1c' : '#ffffff';
+
   return {
     algorithm: isDark ? antThemeEngine.darkAlgorithm : antThemeEngine.defaultAlgorithm,
     token: {
-      colorPrimary: '#1890ff',
-      colorSuccess: '#52c41a',
-      colorError: '#ff4d4f',
-      borderRadius: 8,
-      fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+      colorPrimary: ink,
+      colorTextLightSolid: primaryText,
+      colorLink: ink,
+      colorLinkHover: inkHover,
+      colorInfo: ink,
+      colorBgContainer: surface,
+      colorBorder: border,
+      borderRadius: 0,
+      borderRadiusLG: 0,
+      borderRadiusSM: 0,
+      borderRadiusXS: 0,
+      controlHeight: 38,
+      wireframe: false,
+      fontFamily: "'JetBrains Mono', 'Fira Code', monospace"
+    },
+    components: {
+      Button: {
+        borderRadius: 0,
+        primaryColor: primaryText,
+        colorTextLightSolid: primaryText,
+        colorPrimaryHover: inkHover,
+        colorPrimaryActive: inkHover
+      },
+      Input: { borderRadius: 0 },
+      Select: { borderRadius: 0 },
+      Modal: { borderRadiusLG: 0 },
+      Tag: { borderRadiusSM: 0 },
+      Menu: {
+        borderRadius: 0,
+        itemBorderRadius: 0,
+        subMenuItemBorderRadius: 0,
+        itemSelectedBg: ink,
+        itemSelectedColor: primaryText,
+        itemHoverBg: ink,
+        itemHoverColor: primaryText,
+        itemActiveBg: ink
+      },
+      Popover: { borderRadiusLG: 0 },
+      Collapse: { borderRadiusLG: 0 }
     }
   };
 });
@@ -86,23 +129,24 @@ onMounted(() => {
 <style scoped>
 .app-wrapper {
   min-height: 100vh;
-  background-color: var(--bg-color);
   color: var(--text-primary);
 }
 
 .app-layout {
   min-height: 100vh;
+  background: transparent !important;
 }
 
 .app-body-layout {
-  min-height: calc(100vh - 64px);
+  min-height: calc(100vh - 74px);
+  background: transparent !important;
 }
 
 .app-content {
-  padding: 24px;
-  background: var(--bg-color);
+  padding: 28px 32px;
+  background: transparent;
   overflow-y: auto;
-  max-height: calc(100vh - 64px);
+  max-height: calc(100vh - 74px);
 }
 
 .content-container {
@@ -114,7 +158,7 @@ onMounted(() => {
 /* TRANSITION ANIMATIONS */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.2s ease;
+  transition: opacity 0.15s ease;
 }
 
 .fade-enter-from,
@@ -124,7 +168,7 @@ onMounted(() => {
 
 @media (max-width: 768px) {
   .app-content {
-    padding: 12px;
+    padding: 16px;
   }
 }
 </style>

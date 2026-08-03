@@ -58,8 +58,8 @@ describe('Minifier.vue', () => {
 
     expect(wrapper.exists()).toBe(true);
     expect(wrapper.find('.toolbar-controls').exists()).toBe(true);
-    expect(wrapper.text()).toContain('Minify Code');
-    expect(wrapper.text()).toContain('Beautify / Prettify');
+    expect(wrapper.text().toUpperCase()).toContain('MINIFY CODE');
+    expect(wrapper.text().toUpperCase()).toContain('BEAUTIFY / PRETTIFY');
     expect(wrapper.findAll('.panel').length).toBe(2);
   });
 });

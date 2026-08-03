@@ -13,10 +13,11 @@
  * @since 03/08/2026
  * @updated 03/08/2026
  */
-
+// ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
-import { useUrlConverter } from './useUrlConverter';
+import { useUrlConverter } from '../useUrlConverter';
 
+// ---------- TESTS
 describe('useUrlConverter composable', () => {
   it('initializes with default encode mode and empty input state', () => {
     const { mode, inputValue, outputValue, parsedUrl, paramColumns, faq, compatibility } =
